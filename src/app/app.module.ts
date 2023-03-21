@@ -13,13 +13,15 @@ import { MatButtonModule } from "@angular/material/button";
 import { CoinListTableComponent } from './components/home-page/coin-list-table/coin-list-table.component';
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
+import { LoaderComponent } from "./shared/components/loader/loader.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomePageComponent,
-    CoinListTableComponent
+    CoinListTableComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,

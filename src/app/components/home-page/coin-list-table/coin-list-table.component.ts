@@ -25,9 +25,10 @@ export class CoinListTableComponent implements OnInit {
     'total_volume'];
   public coinsList: CoinModel[];
   public dataSource: MatTableDataSource<CoinModel>;
+  public isLoading: boolean = true;
 
   constructor(
-    private liveAnnouncer: LiveAnnouncer,
+    private _liveAnnouncer: LiveAnnouncer,
     private coinsService: CoinsService,
   ) {
   }
@@ -58,9 +59,10 @@ export class CoinListTableComponent implements OnInit {
         this.coinsList = result;
         this.dataSource = new MatTableDataSource(this.coinsList);
         this.dataSource.sort = this.sort;
+        this.isLoading = false;
       },
       error: (error: HttpErrorResponse) => {
-
+        this.isLoading = false;
       }
     });
   }
@@ -73,9 +75,9 @@ export class CoinListTableComponent implements OnInit {
     // Furthermore, you can customize the message to add additional
     // details about the values being sorted.
     if (sortState.direction) {
-      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this.liveAnnouncer.announce('Sorting cleared');
+      this._liveAnnouncer.announce('Sorting cleared');
     }
   }
 
