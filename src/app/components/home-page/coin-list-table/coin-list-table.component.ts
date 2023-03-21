@@ -28,7 +28,7 @@ export class CoinListTableComponent implements OnInit {
   public isLoading: boolean = true;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer,
+    private liveAnnouncer: LiveAnnouncer,
     private coinsService: CoinsService,
   ) {
   }
@@ -69,15 +69,14 @@ export class CoinListTableComponent implements OnInit {
 
   /** Announce the change in sort state for assistive technology. */
   public announceSortChange(sortState: Sort): void {
-    console.log(sortState)
     // This example uses English messages. If your application supports
     // multiple language, you would internationalize these strings.
     // Furthermore, you can customize the message to add additional
     // details about the values being sorted.
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce('Sorting cleared');
     }
   }
 

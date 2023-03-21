@@ -1,4 +1,4 @@
-<table *ngIf="!isLoading; else loader"
+<table [hidden]="isLoading"
        mat-table [dataSource]="dataSource"
        matSort (matSortChange)="announceSortChange($event)"
        class="coin-list-table">
@@ -109,6 +109,4 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-<ng-template #loader>
-  <app-loader></app-loader>
-</ng-template>
+<app-loader *ngIf="isLoading"></app-loader>
