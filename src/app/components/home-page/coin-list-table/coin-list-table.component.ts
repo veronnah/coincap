@@ -1,59 +1,82 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+import { HttpErrorResponse } from "@angular/common/http";
+import { CoinsService } from "../../../services/coins.service";
+import { map } from "rxjs";
+import { CoinModel } from "../../../models/coin.model";
 
 @Component({
   selector: 'app-coin-list-table',
   templateUrl: './coin-list-table.component.html',
   styleUrls: ['./coin-list-table.component.scss']
 })
-export class CoinListTableComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-
-  constructor(private _liveAnnouncer: LiveAnnouncer) {
-  }
-
+export class CoinListTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
+  public displayedColumns: string[] = [
+    'market_cap_rank',
+    'name',
+    'current_price',
+    'price_change_percentage_1h_in_currency',
+    'price_change_percentage_24h',
+    'price_change_percentage_14d_in_currency',
+    'total_volume'];
+  public coinsList: CoinModel[];
+  public dataSource: MatTableDataSource<CoinModel>;
+
+  constructor(
+    private liveAnnouncer: LiveAnnouncer,
+    private coinsService: CoinsService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.getCoins();
+  }
+
+  public getCoins(): void {
+    this.coinsService.getCoinsList()
+      .pipe(map((result: CoinModel[]) => {
+          return result.map((coin: CoinModel) => {
+            return {
+              market_cap_rank: coin.market_cap_rank,
+              image: coin.image,
+              name: coin.name,
+              current_price: coin.current_price,
+              price_change_percentage_1h_in_currency: coin.price_change_percentage_1h_in_currency,
+              price_change_percentage_24h: coin.price_change_percentage_24h,
+              price_change_percentage_14d_in_currency: coin.price_change_percentage_14d_in_currency / 2,
+              total_volume: coin.total_volume,
+            }
+          });
+        }
+      )).subscribe({
+      next: (result: CoinModel[]) => {
+        console.log(result)
+        this.coinsList = result;
+        this.dataSource = new MatTableDataSource(this.coinsList);
+        this.dataSource.sort = this.sort;
+      },
+      error: (error: HttpErrorResponse) => {
+
+      }
+    });
   }
 
   /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
+  public announceSortChange(sortState: Sort): void {
+    console.log(sortState)
     // This example uses English messages. If your application supports
     // multiple language, you would internationalize these strings.
     // Furthermore, you can customize the message to add additional
     // details about the values being sorted.
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce('Sorting cleared');
     }
   }
 
-  ngOnInit(): void {
-  }
 }
