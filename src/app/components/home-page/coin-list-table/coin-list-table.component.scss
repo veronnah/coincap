@@ -1,24 +1,31 @@
 @import "../../../../assets/colors";
 
-.coin-list-table {
-  width: 100%;
-  border-radius: 5px;
+.table-container {
   padding-top: 130px;
   padding-bottom: 130px;
 
-  .coin-img {
-    img {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
+  .coin-list-table {
+    width: 100%;
+    border-radius: 5px;
+
+    .coin-img {
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+    }
+
+    .bull {
+      color: $bullish;
+    }
+
+    .bear {
+      color: $bearish;
     }
   }
 
-  .bull {
-    color: $bullish;
-  }
 
-  .bear {
-    color: $bearish;
-  }
+
 }
+

@@ -14,6 +14,7 @@ import { CoinListTableComponent } from './components/home-page/coin-list-table/c
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
 import { LoaderComponent } from "./shared/components/loader/loader.component";
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LoaderComponent } from "./shared/components/loader/loader.component";
     MatButtonModule,
     MatTableModule,
     MatSortModule,
+    NgApexchartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

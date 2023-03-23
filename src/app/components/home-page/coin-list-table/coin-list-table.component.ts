@@ -2,10 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
-import { HttpErrorResponse } from "@angular/common/http";
 import { CoinsService } from "../../../services/coins.service";
 import { map } from "rxjs";
 import { CoinModel } from "../../../models/coin.model";
+import { MatPaginator } from "@angular/material/paginator";
+import { ChartOptionsModel } from "../../../models/chartOptions.model";
+
+declare global {
+  interface Window {
+    Apex: ChartOptionsModel;
+  }
+}
 
 @Component({
   selector: 'app-coin-list-table',
@@ -14,6 +21,7 @@ import { CoinModel } from "../../../models/coin.model";
 })
 export class CoinListTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public displayedColumns: string[] = [
     'market_cap_rank',
@@ -22,23 +30,73 @@ export class CoinListTableComponent implements OnInit {
     'price_change_percentage_1h_in_currency',
     'price_change_percentage_24h',
     'price_change_percentage_14d_in_currency',
-    'total_volume'];
+    'total_volume',
+    'sparkline_in_7d',
+  ];
   public coinsList: CoinModel[];
   public dataSource: MatTableDataSource<CoinModel>;
+  public clickedRows: Set<CoinModel> = new Set<CoinModel>();
+  public currentPage: number = 1;
   public isLoading: boolean = true;
+
+  public commonLineSparklineOptions: Partial<ChartOptionsModel> = {
+    chart: {
+      type: "line",
+      width: 135,
+      height: 50,
+      animations: {
+        enabled: false,
+      },
+      sparkline: {
+        enabled: true,
+      }
+    },
+    tooltip: {
+      fixed: {
+        enabled: false,
+      },
+      x: {
+        show: false,
+      },
+      y: {
+        title: {
+          formatter: (seriesName: string) => {
+            return "";
+          }
+        }
+      },
+      marker: {
+        show: false
+      }
+    }
+  };
 
   constructor(
     private liveAnnouncer: LiveAnnouncer,
     private coinsService: CoinsService,
   ) {
+    window.Apex = {
+      stroke: {
+        width: 2,
+      },
+      markers: {
+        size: 0,
+      },
+      tooltip: {
+        fixed: {
+          enabled: true,
+        }
+      }
+    };
   }
 
   ngOnInit(): void {
-    this.getCoins();
+    this.getCoins(this.currentPage);
   }
 
-  public getCoins(): void {
-    this.coinsService.getCoinsList()
+  public getCoins(pageNumber: number): void {
+    this.isLoading = true;
+    this.coinsService.getCoinsList(pageNumber)
       .pipe(map((result: CoinModel[]) => {
           return result.map((coin: CoinModel) => {
             return {
@@ -50,29 +108,50 @@ export class CoinListTableComponent implements OnInit {
               price_change_percentage_24h: coin.price_change_percentage_24h,
               price_change_percentage_14d_in_currency: coin.price_change_percentage_14d_in_currency / 2,
               total_volume: coin.total_volume,
+              sparkline_in_7d: coin.sparkline_in_7d,
             }
           });
         }
       )).subscribe({
       next: (result: CoinModel[]) => {
-        console.log(result)
         this.coinsList = result;
+
+        this.coinsList.forEach((coin: CoinModel) => {
+          let color: string[];
+          coin.price_change_percentage_14d_in_currency >= 0 ? color = ['#57BD0F'] : color = ['#ED5565'];
+
+          return coin.chartOptions = {
+            series: [
+              {
+                data: coin.sparkline_in_7d.price,
+              }
+            ],
+            colors: color,
+          }
+        });
+
         this.dataSource = new MatTableDataSource(this.coinsList);
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
         this.isLoading = false;
       },
-      error: (error: HttpErrorResponse) => {
+      error: () => {
         this.isLoading = false;
       }
     });
   }
 
-  /** Announce the change in sort state for assistive technology. */
+  public paginate(direction: string): void {
+    if (direction === 'next') {
+      this.currentPage++
+    } else if (direction === 'prev' && this.currentPage > 1) {
+      this.currentPage--;
+    }
+
+    this.getCoins(this.currentPage);
+  }
+
   public announceSortChange(sortState: Sort): void {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {

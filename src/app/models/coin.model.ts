@@ -1,3 +1,5 @@
+import { ChartOptionsModel } from "./chartOptions.model";
+
 export interface CoinModel {
   market_cap_rank: number,
   image: string,
@@ -7,4 +9,10 @@ export interface CoinModel {
   price_change_percentage_24h: number,
   price_change_percentage_14d_in_currency: number,
   total_volume: number,
+  sparkline_in_7d: Sparkline7dModel,
+  chartOptions?: ChartOptionsModel,
+}
+
+interface Sparkline7dModel {
+  price: number[];
 }

@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+
 @include mat.core();
 
 $coincap-primary: mat.define-palette(mat.$indigo-palette);
@@ -15,7 +16,6 @@ $coincap-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($coincap-theme);
-
 @import "assets/fonts";
 @import "assets/colors";
 
@@ -26,6 +26,11 @@ html, body {
 body {
   margin: 0;
   font-family: 'Solway', serif;
+  color: $primary-dark;
+}
+
+a {
+  text-decoration: unset;
 }
 
 .container {
@@ -49,6 +54,10 @@ body {
   }
 }
 
+.align-right-cell-text {
+  text-align: right !important;
+}
+
 .mat-cell {
   &.align-right-cell {
     text-align: right !important;
@@ -62,4 +71,23 @@ body {
 
 .mat-table {
   font-family: unset;
+}
+
+tr {
+  &.mat-row {
+    height: 50px;
+  }
+}
+
+apx-chart {
+  &.mini-sparkline {
+    div {
+      display: flex !important;
+      justify-content: flex-end;
+    }
+
+    .apexcharts-legend {
+      display: none !important;
+    }
+  }
 }

@@ -1,112 +1,140 @@
-<table [hidden]="isLoading"
-       mat-table [dataSource]="dataSource"
-       matSort (matSortChange)="announceSortChange($event)"
-       class="coin-list-table">
+<div [hidden]="isLoading" class="table-container">
+  <table mat-table [dataSource]="dataSource"
+         matSort (matSortChange)="announceSortChange($event)"
+         class="coin-list-table">
 
-  <ng-container matColumnDef="market_cap_rank">
-    <th mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header="market_cap_rank"
-        sortActionDescription="Sort by number">
-      #
-    </th>
-    <td mat-cell *matCellDef="let coin">
-      {{ coin.market_cap_rank }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="market_cap_rank">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="market_cap_rank"
+          sortActionDescription="Sort by rank">
+        #
+      </th>
+      <td mat-cell *matCellDef="let coin">
+        {{ coin.market_cap_rank }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header="name"
-        sortActionDescription="Sort by name">
-      Name
-    </th>
-    <td mat-cell *matCellDef="let coin">
-      <div class="coin-name d-flex items-center g-14">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="name"
+          sortActionDescription="Sort by name">
+        Name
+      </th>
+      <td mat-cell *matCellDef="let coin">
+        <div class="coin-name d-flex items-center g-14">
         <span class="coin-img">
         <img [src]="coin.image" [alt]="coin.name+'image'">
       </span>
-        <span>{{coin.name}}</span>
-      </div>
-    </td>
-  </ng-container>
+          <span>{{ coin.name }}</span>
+        </div>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="current_price">
-    <th mat-header-cell
-        class="align-right-cell"
-        *matHeaderCellDef
-        mat-sort-header="current_price"
-        sortActionDescription="Sort by price">
-      Price
-    </th>
-    <td mat-cell class="align-right-cell"
-        *matCellDef="let coin">
-      ${{ coin.current_price | number:'1.0-12' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="current_price">
+      <th mat-header-cell
+          class="align-right-cell"
+          *matHeaderCellDef
+          mat-sort-header="current_price"
+          sortActionDescription="Sort by price">
+        Price
+      </th>
+      <td mat-cell class="align-right-cell"
+          *matCellDef="let coin">
+        ${{ coin.current_price | number:'1.0-12' }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="price_change_percentage_1h_in_currency">
-    <th mat-header-cell
-        class="align-right-cell"
-        *matHeaderCellDef
-        mat-sort-header="price_change_percentage_1h_in_currency"
-        sortActionDescription="Sort by symbol">
-      1h
-    </th>
-    <td mat-cell class="align-right-cell"
-        [class.bull]="coin.price_change_percentage_1h_in_currency >= 0"
-        [class.bear]="coin.price_change_percentage_1h_in_currency < 0"
-        *matCellDef="let coin">
-      {{ coin.price_change_percentage_1h_in_currency | number:'1.0-2' }}%
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="price_change_percentage_1h_in_currency">
+      <th mat-header-cell
+          class="align-right-cell"
+          *matHeaderCellDef
+          mat-sort-header="price_change_percentage_1h_in_currency"
+          sortActionDescription="Sort by 1h change">
+        1h
+      </th>
+      <td mat-cell class="align-right-cell"
+          [class.bull]="coin.price_change_percentage_1h_in_currency >= 0"
+          [class.bear]="coin.price_change_percentage_1h_in_currency < 0"
+          *matCellDef="let coin">
+        {{ coin.price_change_percentage_1h_in_currency | number:'1.0-2' }}%
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="price_change_percentage_24h">
-    <th mat-header-cell
-        class="align-right-cell"
-        *matHeaderCellDef
-        mat-sort-header="price_change_percentage_24h"
-        sortActionDescription="Sort by symbol">
-      24h
-    </th>
-    <td mat-cell class="align-right-cell"
-        [class.bull]="coin.price_change_percentage_24h >= 0"
-        [class.bear]="coin.price_change_percentage_24h < 0"
-        *matCellDef="let coin">
-      {{ coin.price_change_percentage_24h | number:'1.0-2' }}%
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="price_change_percentage_24h">
+      <th mat-header-cell
+          class="align-right-cell"
+          *matHeaderCellDef
+          mat-sort-header="price_change_percentage_24h"
+          sortActionDescription="Sort by 24h change">
+        24h
+      </th>
+      <td mat-cell class="align-right-cell"
+          [class.bull]="coin.price_change_percentage_24h >= 0"
+          [class.bear]="coin.price_change_percentage_24h < 0"
+          *matCellDef="let coin">
+        {{ coin.price_change_percentage_24h | number:'1.0-2' }}%
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="price_change_percentage_14d_in_currency">
-    <th mat-header-cell
-        class="align-right-cell"
-        *matHeaderCellDef
-        mat-sort-header="price_change_percentage_14d_in_currency"
-        sortActionDescription="Sort by symbol">
-      7d
-    </th>
-    <td mat-cell class="align-right-cell"
-        [class.bull]="coin.price_change_percentage_14d_in_currency >= 0"
-        [class.bear]="coin.price_change_percentage_14d_in_currency < 0"
-        *matCellDef="let coin">
-      {{ coin.price_change_percentage_14d_in_currency | number:'1.0-2' }}%
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="price_change_percentage_14d_in_currency">
+      <th mat-header-cell
+          class="align-right-cell"
+          *matHeaderCellDef
+          mat-sort-header="price_change_percentage_14d_in_currency"
+          sortActionDescription="Sort by 7d change">
+        7d
+      </th>
+      <td mat-cell class="align-right-cell"
+          [class.bull]="coin.price_change_percentage_14d_in_currency >= 0"
+          [class.bear]="coin.price_change_percentage_14d_in_currency < 0"
+          *matCellDef="let coin">
+        {{ coin.price_change_percentage_14d_in_currency | number:'1.0-2' }}%
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="total_volume">
-    <th mat-header-cell class="align-right-cell"
-        *matHeaderCellDef mat-sort-header="total_volume"
-        sortActionDescription="Sort by symbol">
-      Total volume
-    </th>
-    <td mat-cell class="align-right-cell" *matCellDef="let coin">
-      ${{ coin.total_volume | number }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="total_volume">
+      <th mat-header-cell class="align-right-cell"
+          *matHeaderCellDef mat-sort-header="total_volume"
+          sortActionDescription="Sort by volume">
+        Total volume
+      </th>
+      <td mat-cell class="align-right-cell" *matCellDef="let coin">
+        ${{ coin.total_volume | number }}
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <ng-container matColumnDef="sparkline_in_7d">
+      <th mat-header-cell class="align-right-cell-text"
+          *matHeaderCellDef>
+        Last 7 days
+      </th>
+      <td mat-cell class="align-right-cell" *matCellDef="let coin; let i = index">
+        <apx-chart class="mini-sparkline"
+                   [series]="coin.chartOptions.series"
+                   [colors]="coin.chartOptions.colors"
+                   [chart]="commonLineSparklineOptions.chart!"
+                   [tooltip]="commonLineSparklineOptions.tooltip!">
+        </apx-chart>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        (click)="clickedRows.add(row)">
+    </tr>
+  </table>
+
+  <button mat-button
+          (click)="paginate('prev')"
+          [disabled]="currentPage === 1">
+    Prev
+  </button>
+  <button mat-button
+          (click)="paginate('next')">
+    Next
+  </button>
+</div>
 
 <app-loader *ngIf="isLoading"></app-loader>
