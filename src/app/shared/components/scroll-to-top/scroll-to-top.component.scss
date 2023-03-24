@@ -1,0 +1,25 @@
+@import "../../../../assets/colors";
+
+.scroll-top-circle {
+  position: fixed;
+  width: 37px;
+  height: 37px;
+  bottom: -50px;
+  right: 120px;
+  border-radius: 50%;
+  opacity: .8;
+  border: 1px solid $yellow-dark;
+  transition: .3s;
+
+  img {
+    width: 15px;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.scroll-shown {
+  bottom: 20px;
+}

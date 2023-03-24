@@ -20,6 +20,7 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { ScrollToTopComponent } from './shared/components/scroll-to-top/scroll-to-top.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     CoinListTableComponent,
     LoaderComponent,
     PaginationComponent,
+    ScrollToTopComponent,
   ],
     imports: [
         BrowserModule,
