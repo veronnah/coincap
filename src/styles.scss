@@ -33,6 +33,10 @@ a {
   text-decoration: unset;
 }
 
+.h-100vh-85 {
+  height: calc(100vh - 85px);
+}
+
 .container {
   max-width: 1400px;
   width: 100%;
