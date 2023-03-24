@@ -1,0 +1,13 @@
+<div class="pagination d-flex justify-content-center mt-20">
+  <button mat-button
+          (click)="paginate('prev')"
+          [disabled]="currentPage === 1">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+    <span>Prev</span>
+  </button>
+  <button mat-button
+          (click)="paginate('next')">
+    <span>Next</span>
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>

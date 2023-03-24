@@ -37,6 +37,7 @@ export class CoinListTableComponent implements OnInit {
   public dataSource: MatTableDataSource<CoinModel>;
   public clickedRows: Set<CoinModel> = new Set<CoinModel>();
   public currentPage: number = 1;
+  public searchValue: string = '';
   public isLoading: boolean = true;
 
   public commonLineSparklineOptions: Partial<ChartOptionsModel> = {
@@ -96,13 +97,17 @@ export class CoinListTableComponent implements OnInit {
 
   public getCoins(pageNumber: number): void {
     this.isLoading = true;
+    this.searchValue = '';
+
     this.coinsService.getCoinsList(pageNumber)
       .pipe(map((result: CoinModel[]) => {
           return result.map((coin: CoinModel) => {
             return {
+              id: coin.id,
               market_cap_rank: coin.market_cap_rank,
               image: coin.image,
               name: coin.name,
+              symbol: coin.symbol,
               current_price: coin.current_price,
               price_change_percentage_1h_in_currency: coin.price_change_percentage_1h_in_currency,
               price_change_percentage_24h: coin.price_change_percentage_24h,
@@ -141,14 +146,14 @@ export class CoinListTableComponent implements OnInit {
     });
   }
 
-  public paginate(direction: string): void {
-    if (direction === 'next') {
-      this.currentPage++
-    } else if (direction === 'prev' && this.currentPage > 1) {
-      this.currentPage--;
-    }
+  public filterCoins(): void {
+    const filteredCoins = this.coinsList.filter((coin: CoinModel) => {
+      return coin.name.trim().toLowerCase().includes(this.searchValue.trim().toLowerCase())
+        || coin.symbol.trim().toLowerCase().includes(this.searchValue.trim().toLowerCase());
+    });
 
-    this.getCoins(this.currentPage);
+    this.dataSource = new MatTableDataSource(filteredCoins);
+    this.dataSource.sort = this.sort;
   }
 
   public announceSortChange(sortState: Sort): void {
