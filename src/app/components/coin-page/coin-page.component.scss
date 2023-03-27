@@ -1,0 +1,33 @@
+@import "../../../assets/colors";
+
+.coin-info-wrapper {
+  margin-top: 170px;
+
+  .coin-name {
+    .coin-img {
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+    }
+
+    .coin-symbol {
+      color: $primary-grey;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+  }
+
+  .coin-price {
+    .change-percentage {
+      &.bull {
+        color: $bullish;
+      }
+
+      &.bear {
+        color: $bearish;
+      }
+    }
+  }
+}

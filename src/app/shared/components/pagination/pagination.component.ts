@@ -21,7 +21,6 @@ export class PaginationComponent implements OnInit {
       this.currentPage--;
     }
 
-    // this.getCoins(this.currentPage);
     this.getData.emit(this.currentPage);
   }
 

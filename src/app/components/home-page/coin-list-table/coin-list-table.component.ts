@@ -7,6 +7,7 @@ import { map } from "rxjs";
 import { CoinModel } from "../../../models/coin.model";
 import { MatPaginator } from "@angular/material/paginator";
 import { ChartOptionsModel } from "../../../models/chartOptions.model";
+import { Router } from "@angular/router";
 
 declare global {
   interface Window {
@@ -75,6 +76,7 @@ export class CoinListTableComponent implements OnInit {
   constructor(
     private liveAnnouncer: LiveAnnouncer,
     private coinsService: CoinsService,
+    private router: Router,
   ) {
     window.Apex = {
       stroke: {
@@ -120,6 +122,7 @@ export class CoinListTableComponent implements OnInit {
       )).subscribe({
       next: (result: CoinModel[]) => {
         this.coinsList = result;
+        console.log(result)
 
         this.coinsList.forEach((coin: CoinModel) => {
           let color: string[];
@@ -154,6 +157,11 @@ export class CoinListTableComponent implements OnInit {
 
     this.dataSource = new MatTableDataSource(filteredCoins);
     this.dataSource.sort = this.sort;
+  }
+
+  public onRowClick(row: CoinModel): void {
+    this.clickedRows.add(row);
+    this.router.navigate(['coin', row.id]).then();
   }
 
   public announceSortChange(sortState: Sort): void {

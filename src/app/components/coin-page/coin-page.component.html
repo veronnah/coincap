@@ -1,0 +1,38 @@
+<div class="coin-info-wrapper" *ngIf="coin">
+  <div class="rank">
+    <span>Rank #</span>
+    <span>{{ coin?.market_cap_rank }}</span>
+  </div>
+
+  <div class="coin-name d-flex items-center g-14">
+    <span class="coin-img">
+      <img [src]="coin.image.thumb" [alt]="coin.symbol+'-logo'">
+    </span>
+    <span class="coin-name">{{ coin.name }}</span>
+    <span class="coin-symbol">{{ coin.symbol }}</span>
+  </div>
+
+  <div class="coin-price d-flex items-center g-14">
+    <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
+    <span class="change-percentage"
+          [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
+          [class.bear]="coin.market_data.price_change_percentage_24h < 0">
+      <span>
+        <img src="./assets/img/indicator.svg" alt="price indicator">
+      </span>
+      <span>
+        {{ coin.market_data.price_change_percentage_24h | abs | number:'1.0-2' }}
+      </span>
+    </span>
+  </div>
+
+  <div class="coin-chart-wrapper">
+    <h3>Tether Price Chart (USDT)</h3>
+    <p>Last updated 02:35PM UTC. Currency in USD.</p>
+  </div>
+</div>
+<div class="d-flex justify-content-center items-center h-100vh-85"
+     *ngIf="isLoading">
+  <app-loader></app-loader>
+</div>
+

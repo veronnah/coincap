@@ -21,6 +21,8 @@ import { FormsModule } from "@angular/forms";
 import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { ScrollToTopComponent } from './shared/components/scroll-to-top/scroll-to-top.component';
+import { CoinPageComponent } from './components/coin-page/coin-page.component';
+import { AbsPipe } from './shared/pipes/abs.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { ScrollToTopComponent } from './shared/components/scroll-to-top/scroll-t
     LoaderComponent,
     PaginationComponent,
     ScrollToTopComponent,
+    CoinPageComponent,
+    AbsPipe,
   ],
     imports: [
         BrowserModule,
