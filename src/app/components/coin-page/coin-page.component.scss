@@ -23,10 +23,24 @@
     .change-percentage {
       &.bull {
         color: $bullish;
+
+        svg {
+          path {
+            fill: $bullish;
+          }
+        }
       }
 
       &.bear {
         color: $bearish;
+
+        svg {
+          transform: rotate(-180deg);
+
+          path {
+            fill: $bearish;
+          }
+        }
       }
     }
   }

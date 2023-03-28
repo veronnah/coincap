@@ -161,7 +161,7 @@ export class CoinListTableComponent implements OnInit {
 
   public onRowClick(row: CoinModel): void {
     this.clickedRows.add(row);
-    this.router.navigate(['coin', row.id]).then();
+    this.router.navigate(['coins', row.id]).then();
   }
 
   public announceSortChange(sortState: Sort): void {

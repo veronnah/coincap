@@ -1,4 +1,4 @@
-<div class="coin-info-wrapper" *ngIf="coin">
+<div class="coin-info-wrapper" *ngIf="!isLoading">
   <div class="rank">
     <span>Rank #</span>
     <span>{{ coin?.market_cap_rank }}</span>
@@ -14,12 +14,16 @@
 
   <div class="coin-price d-flex items-center g-14">
     <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
-    <span class="change-percentage"
+    <span class="change-percentage d-flex items-center"
           [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
           [class.bear]="coin.market_data.price_change_percentage_24h < 0">
-      <span>
-        <img src="./assets/img/indicator.svg" alt="price indicator">
-      </span>
+        <svg width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M0.750023 5.25C0.446678 5.25 0.173198 5.0673 0.0571128 4.78702C-0.0589722 4.50675 0.00519039
+                  4.18418 0.21969 3.96968L3.96968 0.219667C4.26255 -0.0732225 4.73745 -0.0732225 5.03033 0.219667L8.78032
+                  3.96968C8.99482 4.18418 9.05903 4.50675 8.94293 4.78702C8.82683 5.0673 8.55338 5.25 8.25 5.25H0.750023Z"
+                  fill="#3F3E3E"/>
+        </svg>
       <span>
         {{ coin.market_data.price_change_percentage_24h | abs | number:'1.0-2' }}
       </span>
@@ -27,10 +31,56 @@
   </div>
 
   <div class="coin-chart-wrapper">
-    <h3>Tether Price Chart (USDT)</h3>
-    <p>Last updated 02:35PM UTC. Currency in USD.</p>
+    <h3>{{ coin.name }} Price Chart (USDT)</h3>
+    <p>Last updated {{ initialDate | date : 'shortTime' }}. Currency in USD.</p>
+
+    <button
+      (click)="getChartData( '1')"
+      [class.active]="activeOptionButton=='24h'"
+      class="cur-point">
+      24h
+    </button>
+    <button
+      (click)="getChartData( '7' )"
+      [class.active]="activeOptionButton=='7d'"
+      class="cur-point">
+      7d
+    </button>
+    <button
+      (click)="getChartData( '14' )"
+      [class.active]="activeOptionButton=='14d'"
+      class="cur-point">
+      14d
+    </button>
+    <button
+      (click)="getChartData( '30' )"
+      [class.active]="activeOptionButton=='30d'"
+      class="cur-point">
+      30d
+    </button>
+    <button
+      (click)="getChartData( 'max' )"
+      [class.active]="activeOptionButton=='max'"
+      class="cur-point">
+      Max
+    </button>
+    <apx-chart
+      #chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [colors]="chartOptions.colors"
+      [yaxis]="chartOptions.yaxis"
+      [dataLabels]="chartOptions.dataLabels"
+      [markers]="chartOptions.markers"
+      [stroke]="chartOptions.stroke"
+      [grid]="chartOptions.grid"
+      [xaxis]="chartOptions.xaxis"
+      [tooltip]="chartOptions.tooltip"
+      [annotations]="chartOptions.annotations"
+    ></apx-chart>
   </div>
 </div>
+
 <div class="d-flex justify-content-center items-center h-100vh-85"
      *ngIf="isLoading">
   <app-loader></app-loader>

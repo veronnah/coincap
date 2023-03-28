@@ -5,7 +5,7 @@ import { CoinPageComponent } from "./components/coin-page/coin-page.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
-  {path: 'coin/:id', component: CoinPageComponent},
+  {path: 'coins/:id', component: CoinPageComponent},
 ];
 
 @NgModule({

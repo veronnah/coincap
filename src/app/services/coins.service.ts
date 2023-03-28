@@ -20,4 +20,8 @@ export class CoinsService {
   public getCoin(id: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/coins/${id}`);
   }
+
+  public getMarketData(coinId: string, days: string | undefined): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`);
+  }
 }
