@@ -23,6 +23,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { ScrollToTopComponent } from './shared/components/scroll-to-top/scroll-to-top.component';
 import { CoinPageComponent } from './components/coin-page/coin-page.component';
 import { AbsPipe } from './shared/pipes/abs.pipe';
+import { MatTabsModule } from "@angular/material/tabs";
+import { TradingviewWidgetModule } from "angular-tradingview-widget";
 
 @NgModule({
   declarations: [
@@ -36,22 +38,24 @@ import { AbsPipe } from './shared/pipes/abs.pipe';
     CoinPageComponent,
     AbsPipe,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTableModule,
-        MatSortModule,
-        NgApexchartsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        MatTooltipModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    NgApexchartsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatTooltipModule,
+    MatTabsModule,
+    TradingviewWidgetModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

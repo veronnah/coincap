@@ -7,7 +7,8 @@ import {
   ApexXAxis,
   ApexStroke,
   ApexYAxis,
-  ApexMarkers
+  ApexMarkers,
+  ApexGrid,
 } from "ng-apexcharts";
 
 export interface ChartOptionsModel {
@@ -26,4 +27,5 @@ export interface ChartOptionsModel {
   legend?: ApexLegend;
   fill?: ApexFill;
   tooltip?: ApexTooltip;
+  grid?: ApexGrid,
 }

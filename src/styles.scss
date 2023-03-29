@@ -39,9 +39,14 @@ a {
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1500px;
   width: 100%;
   margin: 0 auto;
+  padding: 0 10px;
+}
+
+.wrapper {
+  width: 100%;
 }
 
 .d-flex {
@@ -98,6 +103,10 @@ a {
 
 .g-14 {
   gap: 14px;
+}
+
+.g-60 {
+  gap: 70px;
 }
 
 .mt-20 {

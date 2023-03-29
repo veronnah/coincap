@@ -1,22 +1,23 @@
-<div class="coin-info-wrapper" *ngIf="!isLoading">
-  <div class="rank">
-    <span>Rank #</span>
-    <span>{{ coin?.market_cap_rank }}</span>
-  </div>
+<div class="coin-details d-flex g-60" *ngIf="!isLoading">
+  <div class="wrapper">
+    <div class="rank">
+      <span>Rank #</span>
+      <span>{{ coin?.market_cap_rank }}</span>
+    </div>
 
-  <div class="coin-name d-flex items-center g-14">
+    <div class="coin-name d-flex items-center g-14">
     <span class="coin-img">
       <img [src]="coin.image.thumb" [alt]="coin.symbol+'-logo'">
     </span>
-    <span class="coin-name">{{ coin.name }}</span>
-    <span class="coin-symbol">{{ coin.symbol }}</span>
-  </div>
+      <span class="coin-name">{{ coin.name }}</span>
+      <span class="coin-symbol">{{ coin.symbol }}</span>
+    </div>
 
-  <div class="coin-price d-flex items-center g-14">
-    <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
-    <span class="change-percentage d-flex items-center"
-          [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
-          [class.bear]="coin.market_data.price_change_percentage_24h < 0">
+    <div class="coin-price d-flex items-center g-14">
+      <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
+      <span class="change-percentage d-flex items-center"
+            [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
+            [class.bear]="coin.market_data.price_change_percentage_24h < 0">
         <svg width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M0.750023 5.25C0.446678 5.25 0.173198 5.0673 0.0571128 4.78702C-0.0589722 4.50675 0.00519039
@@ -28,56 +29,77 @@
         {{ coin.market_data.price_change_percentage_24h | abs | number:'1.0-2' }}
       </span>
     </span>
+    </div>
+
+    <div class="coin-chart-wrapper">
+      <h3>{{ coin.name }} Price Chart (USDT)</h3>
+      <p>Last updated {{ initialDate | date : 'shortTime' }}. Currency in USD.</p>
+      <mat-tab-group dynamicHeight (selectedTabChange)="setTradingViewWidget()">
+        <mat-tab label="Price">
+          <button
+            (click)="getChartData( '1')"
+            [class.active]="activeOptionButton=='24h'"
+            class="cur-point">
+            1d
+          </button>
+          <button
+            (click)="getChartData( '7' )"
+            [class.active]="activeOptionButton=='7d'"
+            class="cur-point">
+            7d
+          </button>
+          <button
+            (click)="getChartData( '14' )"
+            [class.active]="activeOptionButton=='14d'"
+            class="cur-point">
+            14d
+          </button>
+          <button
+            (click)="getChartData( '30' )"
+            [class.active]="activeOptionButton=='30d'"
+            class="cur-point">
+            30d
+          </button>
+          <button
+            (click)="getChartData( 'max' )"
+            [class.active]="activeOptionButton=='max'"
+            class="cur-point">
+            Max
+          </button>
+          <apx-chart
+            #chart
+            [series]="chartOptions.series!"
+            [chart]="chartOptions.chart!"
+            [grid]="chartOptions.grid!"
+            [colors]="chartOptions.colors!"
+            [yaxis]="chartOptions.yaxis!"
+            [dataLabels]="chartOptions.dataLabels!"
+            [markers]="chartOptions.markers!"
+            [stroke]="chartOptions.stroke!"
+            [xaxis]="chartOptions.xaxis!"
+            [tooltip]="chartOptions.tooltip!"
+          ></apx-chart>
+        </mat-tab>
+        <mat-tab label="TradingView">
+          <tradingview-widget [widgetConfig]="widgetConfig"></tradingview-widget>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
+  <div class="wrapper">
+    <div class="coin-info">
+      <h3>Info</h3>
+      <div class="d-flex">
+        <div class="coin-info-title">Website</div>
+        <div class="coin-info-values">
+          <span>bitcoin.org</span>
+          <span>Whitepaper</span>
+        </div>
+      </div>
+    </div>
+    <div class="coin-converter">
 
-  <div class="coin-chart-wrapper">
-    <h3>{{ coin.name }} Price Chart (USDT)</h3>
-    <p>Last updated {{ initialDate | date : 'shortTime' }}. Currency in USD.</p>
-
-    <button
-      (click)="getChartData( '1')"
-      [class.active]="activeOptionButton=='24h'"
-      class="cur-point">
-      24h
-    </button>
-    <button
-      (click)="getChartData( '7' )"
-      [class.active]="activeOptionButton=='7d'"
-      class="cur-point">
-      7d
-    </button>
-    <button
-      (click)="getChartData( '14' )"
-      [class.active]="activeOptionButton=='14d'"
-      class="cur-point">
-      14d
-    </button>
-    <button
-      (click)="getChartData( '30' )"
-      [class.active]="activeOptionButton=='30d'"
-      class="cur-point">
-      30d
-    </button>
-    <button
-      (click)="getChartData( 'max' )"
-      [class.active]="activeOptionButton=='max'"
-      class="cur-point">
-      Max
-    </button>
-    <apx-chart
-      #chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [colors]="chartOptions.colors"
-      [yaxis]="chartOptions.yaxis"
-      [dataLabels]="chartOptions.dataLabels"
-      [markers]="chartOptions.markers"
-      [stroke]="chartOptions.stroke"
-      [grid]="chartOptions.grid"
-      [xaxis]="chartOptions.xaxis"
-      [tooltip]="chartOptions.tooltip"
-      [annotations]="chartOptions.annotations"
-    ></apx-chart>
+    </div>
   </div>
 </div>
 

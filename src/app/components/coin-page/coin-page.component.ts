@@ -3,6 +3,7 @@ import { CoinsService } from "../../services/coins.service";
 import { ActivatedRoute } from "@angular/router";
 import { ChartComponent } from "ng-apexcharts";
 import { ChartOptionsModel } from "../../models/chartOptions.model";
+import { ITradingViewWidget, Themes } from "angular-tradingview-widget";
 
 @Component({
   selector: 'app-coin-page',
@@ -15,10 +16,10 @@ export class CoinPageComponent implements OnInit {
   public initialDate: Date = new Date();
 
   @ViewChild("chart", {static: false}) chart: ChartComponent;
-  public chartOptions: Partial<any>;
-  // public chartOptions: Partial<ChartOptionsModel>;
+  public chartOptions: Partial<ChartOptionsModel>;
   public activeOptionButton: string;
   public currentCoinId: string;
+  public widgetConfig: ITradingViewWidget;
 
   constructor(
     private coinsService: CoinsService,
@@ -26,10 +27,20 @@ export class CoinPageComponent implements OnInit {
   ) {
   }
 
-  initChart(data: any): void {
+  ngOnInit(): void {
+    this.route.params.subscribe((params: any) => {
+      this.currentCoinId = params.id;
+
+      this.getCoinInfo(this.currentCoinId);
+      this.getChartData('1');
+    });
+  }
+
+  public initChart(data: any): void {
     this.chartOptions = {
       series: [
         {
+          name: 'Price',
           data: data,
         }
       ],
@@ -37,30 +48,87 @@ export class CoinPageComponent implements OnInit {
       chart: {
         type: "area",
         height: 500,
+        fontFamily: 'Solway, sans-serif',
         animations: {
           enabled: false,
         },
+        toolbar: {
+          show: true,
+          offsetX: 0,
+          offsetY: 0,
+          tools: {
+            download: `<img src="./assets/img/download.svg" width="16" alt="Download">`,
+            selection: true,
+            zoom: `<img src="./assets/img/selection.svg" width="16" alt="Selection zoom">`,
+            zoomin: `<img src="./assets/img/zoom-in.svg" width="20" alt="Zoom in">`,
+            zoomout: `<img src="./assets/img/zoom-out.svg" width="20" alt="Zoom out">`,
+            pan: false,
+            reset: `<img src="./assets/img/reset.svg" width="16" alt="Reset">`,
+            customIcons: []
+          },
+          export: {
+            csv: {
+              filename: undefined,
+              columnDelimiter: ',',
+              headerCategory: 'category',
+              headerValue: 'value',
+              dateFormatter(timestamp: any) {
+                return new Date(timestamp).toDateString()
+              }
+            },
+            svg: {
+              filename: undefined,
+            },
+            png: {
+              filename: undefined,
+            }
+          },
+          autoSelected: 'zoom'
+        },
+      },
+      grid: {
+        show: true,
+        borderColor: '#f3f3f3',
+        xaxis: {
+          lines: {
+            show: false,
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true,
+          }
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         width: 2,
       },
       markers: {
-        size: 0
+        size: 0,
       },
       xaxis: {
         type: "datetime",
         tickAmount: 6,
       },
       yaxis: {
-        // floating: true,
-        // decimalsInFloat: 2,
+        labels: {
+          formatter: function (value: number) {
+            return "$" + value;
+          },
+        },
       },
       tooltip: {
+        enabled: true,
+        intersect: false,
+        followCursor: false,
+        fixed: {
+          enabled: false,
+        },
         x: {
-          format: "dd MMM yyyy"
+          format: 'dd MMM yyyy',
         }
       },
       fill: {
@@ -71,17 +139,19 @@ export class CoinPageComponent implements OnInit {
           opacityTo: 0.9,
           stops: [0, 100]
         }
-      }
+      },
     };
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params: any) => {
-      this.currentCoinId = params.id;
-
-      this.getCoinInfo(this.currentCoinId);
-      this.getChartData('1');
-    });
+  public setTradingViewWidget(): void {
+    this.widgetConfig = {
+      widgetType: 'widget',
+      theme: Themes.LIGHT,
+      symbol: 'BITSTAMP:BTCUSD',
+      range: '1d',
+      interval: "60",
+      allow_symbol_change: true,
+    };
   }
 
   public getChartData(days: string): void {
