@@ -1,5 +1,6 @@
 # Coincap
 https://veronnah.github.io/coincap/
+<br>
 App for tracking crypto prices
 ![image](https://user-images.githubusercontent.com/60988349/228788332-edd7e766-1303-4c99-a3e5-8a60672b0e61.png)
 
