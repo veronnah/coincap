@@ -50,6 +50,10 @@
     }
 
     .change-percentage {
+      span {
+        margin-left: 4px;
+      }
+
       &.bull {
         color: $bullish;
 
@@ -171,16 +175,29 @@
     h3 {
       font-size: 24px;
       font-weight: 500;
-
     }
+
     .coin-info-values {
-      a {
-        line-height: 10px;
+      a, span {
+        line-height: 14px;
         font-size: 14px;
         padding: 8px;
         background-color: $grey-light-second;
+        opacity: .8;
         border-radius: 4px;
+        transition: .3s all;
+
+        &:hover {
+          opacity: 1;
+        }
       }
+    }
+  }
+
+  .coin-converter {
+    h3 {
+      font-size: 24px;
+      font-weight: 500;
     }
   }
 }

@@ -7,6 +7,8 @@ import { ITradingViewWidget, Themes } from "angular-tradingview-widget";
 import { AutoDestroyService } from "../../services/auto-destroy.service";
 import { takeUntil } from "rxjs";
 import { MatTabChangeEvent } from "@angular/material/tabs";
+import { MarketDataModel } from "../../models/marketData.model";
+import { CoinDetailsModel } from "../../models/coinDetails.model";
 
 @Component({
   selector: 'app-coin-page',
@@ -45,7 +47,7 @@ export class CoinPageComponent implements OnInit {
       });
   }
 
-  public initChart(data: any): void {
+  public initChart(data: number[]): void {
     this.chartOptions = {
       series: [
         {
@@ -159,7 +161,7 @@ export class CoinPageComponent implements OnInit {
     this.coinsService.getMarketData(this.currentCoinId, days)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (result) => {
+        next: (result: MarketDataModel) => {
           this.initChart(result.prices);
           this.isChartDataLoading = false;
         },
@@ -173,7 +175,7 @@ export class CoinPageComponent implements OnInit {
     this.coinsService.getCoin(coinId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: coin => {
+        next: (coin: CoinDetailsModel) => {
           this.coin = coin;
           this.isCoinInfoLoading = false;
         },
