@@ -1,13 +1,37 @@
 @import "../../../assets/colors";
 
 .coin-details {
-  margin-top: 170px;
+  margin-top: 140px;
 
-  .coin-name {
+  .rank {
+    width: 80px;
+    height: 22px;
+    background-color: $primary-dark;
+    border-radius: 4px;
+    margin-bottom: 16px;
+
+    span {
+      color: #fff;
+    }
+  }
+
+  .coin-title {
+    margin-bottom: 16px;
+
+    .coin-name {
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .coin-symbol {
+      font-size: 20px;
+      color: $primary-grey;
+    }
+
     .coin-img {
       img {
-        width: 24px;
-        height: 24px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
       }
     }
@@ -20,6 +44,11 @@
   }
 
   .coin-price {
+    .price-num {
+      font-size: 24px;
+      font-weight: 500;
+    }
+
     .change-percentage {
       &.bull {
         color: $bullish;
@@ -41,6 +70,116 @@
             fill: $bearish;
           }
         }
+      }
+    }
+  }
+
+  .chart-title {
+    h3 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+
+    p {
+      font-weight: 300;
+      margin-top: 8px;
+    }
+  }
+
+  .coin-chart-wrapper {
+    position: relative;
+
+    .chart-buttons {
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      button {
+        height: 30px;
+        padding: 8px;
+        background-color: #fff;
+        border: 1px solid $grey-light;
+        font-family: unset;
+
+        &.active {
+          background-color: $yellow-dark;
+          border-color: $yellow-dark;
+          color: #fff;
+        }
+
+        &:first-child {
+          border-radius: 4px 0 0 4px;
+        }
+
+        &:last-child {
+          border-radius: 0 4px 4px 0;
+        }
+      }
+    }
+
+    .mat-tab-header {
+      border-bottom: unset;
+      width: fit-content;
+      flex-grow: unset;
+
+      .mat-tab-label-container {
+        .mat-tab-labels {
+          margin-bottom: 16px;
+
+          .mat-tab-label {
+            height: 30px;
+            opacity: 1;
+            justify-content: flex-start;
+            border: 1px solid $grey-light;
+            min-width: unset;
+
+            &:first-child {
+              width: 100px;
+              border-radius: 4px 0 0 4px;
+            }
+
+            &:last-child {
+              width: 160px;
+              border-radius: 0 4px 4px 0;
+            }
+
+            .mat-tab-label-content {
+              font-family: 'Solway', sans-serif;
+              font-size: 14px;
+              font-weight: 400;
+            }
+
+            &.mat-tab-label-active {
+              background-color: $yellow-dark;
+              color: #fff;
+              border: none;
+            }
+          }
+        }
+      }
+    }
+
+    .loader-small {
+      .loader-wrapper {
+        transform: scale(0.3);
+      }
+    }
+  }
+
+  .coin-info {
+    h3 {
+      font-size: 24px;
+      font-weight: 500;
+
+    }
+    .coin-info-values {
+      a {
+        line-height: 10px;
+        font-size: 14px;
+        padding: 8px;
+        background-color: $grey-light-second;
+        border-radius: 4px;
       }
     }
   }

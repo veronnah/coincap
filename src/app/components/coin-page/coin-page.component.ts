@@ -1,19 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CoinsService } from "../../services/coins.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { ChartComponent } from "ng-apexcharts";
 import { ChartOptionsModel } from "../../models/chartOptions.model";
 import { ITradingViewWidget, Themes } from "angular-tradingview-widget";
+import { AutoDestroyService } from "../../services/auto-destroy.service";
+import { takeUntil } from "rxjs";
+import { MatTabChangeEvent } from "@angular/material/tabs";
 
 @Component({
   selector: 'app-coin-page',
   templateUrl: './coin-page.component.html',
-  styleUrls: ['./coin-page.component.scss']
+  styleUrls: ['./coin-page.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CoinPageComponent implements OnInit {
   public coin: any; // TODO: create a type
-  public isLoading: boolean = true;
+  public isCoinInfoLoading: boolean = true;
   public initialDate: Date = new Date();
+  public isChartDataLoading: boolean = true;
+  public currentTab: string;
 
   @ViewChild("chart", {static: false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptionsModel>;
@@ -24,16 +30,19 @@ export class CoinPageComponent implements OnInit {
   constructor(
     private coinsService: CoinsService,
     private route: ActivatedRoute,
+    private destroy$: AutoDestroyService,
   ) {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: any) => {
-      this.currentCoinId = params.id;
+    this.route.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params: Params) => {
+        this.currentCoinId = params.id;
 
-      this.getCoinInfo(this.currentCoinId);
-      this.getChartData('1');
-    });
+        this.getCoinInfo(this.currentCoinId);
+        this.getChartData('1');
+      });
   }
 
   public initChart(data: any): void {
@@ -64,24 +73,7 @@ export class CoinPageComponent implements OnInit {
             zoomout: `<img src="./assets/img/zoom-out.svg" width="20" alt="Zoom out">`,
             pan: false,
             reset: `<img src="./assets/img/reset.svg" width="16" alt="Reset">`,
-            customIcons: []
-          },
-          export: {
-            csv: {
-              filename: undefined,
-              columnDelimiter: ',',
-              headerCategory: 'category',
-              headerValue: 'value',
-              dateFormatter(timestamp: any) {
-                return new Date(timestamp).toDateString()
-              }
-            },
-            svg: {
-              filename: undefined,
-            },
-            png: {
-              filename: undefined,
-            }
+            customIcons: [],
           },
           autoSelected: 'zoom'
         },
@@ -143,36 +135,50 @@ export class CoinPageComponent implements OnInit {
     };
   }
 
-  public setTradingViewWidget(): void {
-    this.widgetConfig = {
-      widgetType: 'widget',
-      theme: Themes.LIGHT,
-      symbol: 'BITSTAMP:BTCUSD',
-      range: '1d',
-      interval: "60",
-      allow_symbol_change: true,
-    };
+  public setChart(tabEvent: MatTabChangeEvent): void {
+    this.currentTab = tabEvent.tab.textLabel;
+
+    if (this.currentTab === 'Price') {
+      this.getChartData('1');
+    } else if (this.currentTab === 'TradingView') {
+      this.widgetConfig = {
+        widgetType: 'widget',
+        theme: Themes.LIGHT,
+        symbol: 'BITSTAMP:BTCUSD',
+        range: '1d',
+        interval: "60",
+        allow_symbol_change: true,
+        width: 700,
+      };
+    }
   }
 
   public getChartData(days: string): void {
+    this.activeOptionButton = days;
+
     this.coinsService.getMarketData(this.currentCoinId, days)
-      .subscribe(res => {
-        console.log(res.prices)
-        this.initChart(res.prices);
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (result) => {
+          this.initChart(result.prices);
+          this.isChartDataLoading = false;
+        },
+        error: () => {
+          this.isChartDataLoading = false;
+        }
       });
   }
 
   public getCoinInfo(coinId: string): void {
     this.coinsService.getCoin(coinId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: coin => {
           this.coin = coin;
-          console.log(this.coin)
-          console.log(this.coin.market_data)
-          this.isLoading = false;
+          this.isCoinInfoLoading = false;
         },
         error: () => {
-          this.isLoading = false;
+          this.isCoinInfoLoading = false;
         }
       });
   }

@@ -3,11 +3,13 @@ import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { CoinsService } from "../../../services/coins.service";
-import { map } from "rxjs";
+import { map, takeUntil } from "rxjs";
 import { CoinModel } from "../../../models/coin.model";
 import { MatPaginator } from "@angular/material/paginator";
 import { ChartOptionsModel } from "../../../models/chartOptions.model";
 import { Router } from "@angular/router";
+import { HttpErrorResponse } from "@angular/common/http";
+import { AutoDestroyService } from "../../../services/auto-destroy.service";
 
 declare global {
   interface Window {
@@ -77,6 +79,7 @@ export class CoinListTableComponent implements OnInit {
     private liveAnnouncer: LiveAnnouncer,
     private coinsService: CoinsService,
     private router: Router,
+    private destroy$: AutoDestroyService,
   ) {
     window.Apex = {
       stroke: {
@@ -119,7 +122,8 @@ export class CoinListTableComponent implements OnInit {
             }
           });
         }
-      )).subscribe({
+      )).pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (result: CoinModel[]) => {
         this.coinsList = result;
         console.log(result)

@@ -8,9 +8,8 @@ export class AbsPipe implements PipeTransform {
   /**
    * returns the absolute value of a number
    * @param num
-   * @param args
    */
-  transform(num: number, args?: any): any {
+  transform(num: number): number {
     return Math.abs(num);
   }
 

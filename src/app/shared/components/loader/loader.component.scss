@@ -1,10 +1,10 @@
 @import "../../../../assets/colors";
 
-.ldio-o9pyckvgz3o {
+.loader-body {
   > div {
     > div {
       transform-origin: 100px 100px;
-      animation: ldio-o9pyckvgz3o 3.0303030303030303s linear infinite;
+      animation: loader-body 3.0303030303030303s linear infinite;
       opacity: 0.8;
 
       > div {
@@ -69,14 +69,14 @@
   }
 }
 
-.loadingio-spinner-wedges-6l5pe8xxhqd {
+.loader-wrapper {
   width: 200px;
   height: 200px;
   display: inline-block;
   overflow: hidden;
 }
 
-@keyframes ldio-o9pyckvgz3o {
+@keyframes loader-body {
   0% {
     transform: rotate(0deg);
   }

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { HeaderComponent } from "./components/header/header.component";
 import { HomePageComponent } from "./components/home-page/home-page.component";
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,6 +25,9 @@ import { CoinPageComponent } from './components/coin-page/coin-page.component';
 import { AbsPipe } from './shared/pipes/abs.pipe';
 import { MatTabsModule } from "@angular/material/tabs";
 import { TradingviewWidgetModule } from "angular-tradingview-widget";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { ErrorInterceptor } from "./shared/interceptors/error.interceptor";
+import { UrlMiddlePartPipe } from './shared/pipes/url-middle-part.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { TradingviewWidgetModule } from "angular-tradingview-widget";
     ScrollToTopComponent,
     CoinPageComponent,
     AbsPipe,
+    UrlMiddlePartPipe,
   ],
   imports: [
     BrowserModule,
@@ -55,8 +59,11 @@ import { TradingviewWidgetModule } from "angular-tradingview-widget";
     MatTooltipModule,
     MatTabsModule,
     TradingviewWidgetModule,
+    MatSnackBarModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
