@@ -66,6 +66,9 @@ MIT
 @angular/router
 MIT
 
+angular-tradingview-widget
+MIT
+
 apexcharts
 MIT
 The MIT License (MIT)
