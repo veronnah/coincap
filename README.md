@@ -2,6 +2,7 @@
 https://veronnah.github.io/coincap/
 <br>
 App for tracking crypto prices. Provides a fundamental analysis of the crypto market. In addition to tracking price, volume and market capitalisation.
+<br>
 <strong>If you see an error on the main page, api's owner temporarily turned off some endpoints due to some accidents</strong>
 ![image](https://user-images.githubusercontent.com/60988349/228788332-edd7e766-1303-4c99-a3e5-8a60672b0e61.png)
 <br>
