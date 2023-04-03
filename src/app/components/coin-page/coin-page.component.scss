@@ -200,6 +200,18 @@
       font-weight: 500;
     }
 
+    .exchange-input {
+      .curr-symbol {
+        background-color: #fff;
+        height: 40px;
+        width: 100%;
+        font-size: 14px;
+        border-radius: 6px 0 0 6px;
+        color: $grey-medium;
+        border-right: 2px solid $grey-light-second;
+      }
+    }
+
     .converter-bg {
       max-width: 340px;
       width: 100%;

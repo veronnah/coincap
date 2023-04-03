@@ -156,14 +156,20 @@
       </div>
       <div class="coin-converter">
         <h3>{{ coin.name }} Converter</h3>
-        <div class="converter-bg d-flex flex-column items-center">
-          <div class="coin-input">
-            <mat-form-field appearance="outline" class="search-field">
+        <div class="converter-bg d-flex flex-column g-8">
+          <div class="exchange-input d-flex items-center">
+            <div class="curr-symbol d-flex items-center justify-content-center">
+              {{ coin.symbol | uppercase }}
+            </div>
+            <mat-form-field appearance="outline" class="search-field converter-field">
               <input type="number" matInput>
             </mat-form-field>
           </div>
-          <div class="fiat-input">
-            <mat-form-field appearance="outline" class="search-field">
+          <div class="exchange-input d-flex items-center">
+            <div class="curr-symbol d-flex items-center justify-content-center">
+              USD
+            </div>
+            <mat-form-field appearance="outline" class="search-field converter-field">
               <input type="number" matInput>
             </mat-form-field>
           </div>
