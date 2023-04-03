@@ -199,5 +199,13 @@
       font-size: 24px;
       font-weight: 500;
     }
+
+    .converter-bg {
+      max-width: 340px;
+      width: 100%;
+      padding: 30px;
+      background-color: $grey-light-second;
+      border-radius: 15px;
+    }
   }
 }

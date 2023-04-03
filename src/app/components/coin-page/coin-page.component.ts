@@ -17,7 +17,7 @@ import { CoinDetailsModel } from "../../models/coinDetails.model";
   encapsulation: ViewEncapsulation.None,
 })
 export class CoinPageComponent implements OnInit {
-  public coin: any; // TODO: create a type
+  public coin: CoinDetailsModel;
   public isCoinInfoLoading: boolean = true;
   public initialDate: Date = new Date();
   public isChartDataLoading: boolean = true;
