@@ -103,17 +103,17 @@
       <div class="coin-info">
         <h3>Info</h3>
         <div class="d-flex flex-column g-14">
-          <div class="d-flex g-14 items-center">
+          <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Website</div>
-            <div class="coin-info-values d-flex g-8">
+            <div class="coin-info-values d-flex flex-wrap g-8">
               <a [href]="coin.links.homepage[0]" target="_blank">
                 {{ coin.links.homepage[0] | urlMiddlePart }}
               </a>
             </div>
           </div>
-          <div class="d-flex g-14 items-center">
+          <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Community</div>
-            <div class="coin-info-values d-flex g-8">
+            <div class="coin-info-values d-flex flex-wrap g-8">
               <a *ngIf="coin.links.twitter_screen_name" [href]="'https://twitter.com/'+coin.links.twitter_screen_name"
                  target="_blank">
                 <img src="./assets/img/twitter.svg" alt="Twitter">
@@ -126,26 +126,26 @@
               </a>
             </div>
           </div>
-          <div class="d-flex g-14 items-center">
+          <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Tags</div>
-            <div class="coin-info-values d-flex g-8">
+            <div class="coin-info-values d-flex flex-wrap g-8">
               <span *ngFor="let cat of coin.categories">
                 {{ cat }}
               </span>
             </div>
           </div>
-          <div class="d-flex g-14 items-center">
+          <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Source Code</div>
-            <div class="coin-info-values d-flex g-8">
+            <div class="coin-info-values d-flex flex-wrap g-8">
               <a [href]="coin.links.repos_url.github[0]" target="_blank">
                 <img src="./assets/img/git.svg" alt="Github">
                 Github
               </a>
             </div>
           </div>
-          <div class="d-flex g-14 items-center">
+          <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">API id</div>
-            <div class="coin-info-values d-flex g-8">
+            <div class="coin-info-values d-flex flex-wrap g-8">
               <span>
                 {{ coin.id }}
               </span>

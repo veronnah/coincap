@@ -57,6 +57,10 @@ a {
   display: flex;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .flex-column {
   flex-direction: column;
 }
@@ -65,6 +69,10 @@ a {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
 }
 
 .justify-content-center {
