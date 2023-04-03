@@ -10,10 +10,8 @@ export class UrlMiddlePartPipe implements PipeTransform {
    * @param value
    */
   transform(value: string): string {
-    const urlParts = value.replace(/(^\w+:|^)\/\//, '').split(".");
-    urlParts.shift();
-
-    return urlParts.join('.').replace(/\/+$/, '');
+    let domain = (new URL(value));
+    return domain.hostname.replace('www.', '');
   }
 
 }
