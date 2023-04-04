@@ -5,8 +5,7 @@ App for tracking crypto prices. Provides a fundamental analysis of the crypto ma
 <br><br>
 ![image](https://user-images.githubusercontent.com/60988349/228788332-edd7e766-1303-4c99-a3e5-8a60672b0e61.png)
 <br>
-https://veronnah.github.io/coincap/coins/bitcoin
-![image](https://user-images.githubusercontent.com/60988349/228851565-7856f84d-170d-4827-94c9-b6d5540970a3.png)
+![image](https://user-images.githubusercontent.com/60988349/229771587-68ea1ba5-24b6-46f9-b2e7-a1095190eada.png)
 
 <br>
 <br>
