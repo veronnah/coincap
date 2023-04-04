@@ -1,3 +1,11 @@
+<ul class="breadcrumbs" *ngIf="!isCoinInfoLoading">
+  <li>
+    <a routerLink="/">Cryptocurrencies</a>
+    <span> / </span>
+    <span>{{ coin.name }} Price</span>
+  </li>
+</ul>
+
 <div class="coin-details d-flex g-60">
   <div class="wrapper">
     <ng-container *ngIf="!isCoinInfoLoading">
@@ -30,6 +38,15 @@
             {{ coin.market_data.price_change_percentage_24h | abs | number:'1.0-2' }}
           </span>
         </span>
+      </div>
+
+      <div class="price-range">
+        <mat-progress-bar mode="determinate" [value]="priceRangeValue"></mat-progress-bar>
+        <div class="progress-annotations">
+          <div class="price-low">${{ coin.market_data.low_24h.usd | number }}</div>
+          <div class="price-curr">24H Range</div>
+          <div class="price-high">${{ coin.market_data.current_price.usd | number }}</div>
+        </div>
       </div>
 
       <div class="chart-title">
@@ -71,6 +88,7 @@
           Max
         </button>
       </div>
+
       <mat-tab-group dynamicHeight
                      color="transparent"
                      (selectedTabChange)="setChart($event)">
@@ -98,6 +116,7 @@
       <app-loader class="loader-small" *ngIf="isChartDataLoading && !isChartDataLoading"></app-loader>
     </div>
   </div>
+
   <div class="wrapper">
     <ng-container *ngIf="!isCoinInfoLoading">
       <div class="coin-info">
@@ -147,13 +166,25 @@
           <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">API id</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
-              <span>
+              <span class="d-flex items-center g-8" [(ngModel)]="coinAPIid">
                 {{ coin.id }}
+                <img *ngIf="!isCopiedToClipboard"
+                     [cdkCopyToClipboard]="coinAPIid"
+                     (click)="copyToClipboard()"
+                     matTooltip="Click to copy"
+                     class="cur-point"
+                     src="./assets/img/copy.svg"
+                     alt="Copy to clipboard">
+                <img *ngIf="isCopiedToClipboard"
+                     class="cur-point"
+                     src="./assets/img/copied.svg"
+                     alt="Copied to clipboard">
               </span>
             </div>
           </div>
         </div>
       </div>
+
       <div class="coin-converter">
         <h3>{{ coin.name }} Converter</h3>
         <div class="converter-bg d-flex flex-column g-8">
@@ -162,7 +193,10 @@
               {{ coin.symbol | uppercase }}
             </div>
             <mat-form-field appearance="outline" class="search-field converter-field">
-              <input type="number" matInput>
+              <input #coinQuantityInput
+                     type="number" matInput min="0"
+                     [(ngModel)]="coinQuantity"
+                     (input)="convert(coinQuantityInput.value, 'crypto')">
             </mat-form-field>
           </div>
           <div class="exchange-input d-flex items-center">
@@ -170,7 +204,10 @@
               USD
             </div>
             <mat-form-field appearance="outline" class="search-field converter-field">
-              <input type="number" matInput>
+              <input #currencyQuantityInput
+                     type="number" matInput min="0"
+                     [(ngModel)]="currencyQuantity"
+                     (input)="convert(currencyQuantityInput.value, 'fiat')">
             </mat-form-field>
           </div>
 

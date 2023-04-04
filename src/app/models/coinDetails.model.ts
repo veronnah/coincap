@@ -12,6 +12,8 @@ export interface CoinDetailsModel {
 interface MarketDataModel {
   current_price: any,
   price_change_percentage_24h: number,
+  high_24h: any,
+  low_24h: any,
 }
 
 interface LinksModel {

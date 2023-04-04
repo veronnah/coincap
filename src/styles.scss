@@ -40,6 +40,11 @@ a {
   color: inherit;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
 .h-100vh-85 {
   height: calc(100vh - 85px);
 }
@@ -219,7 +224,7 @@ apx-chart {
 }
 
 .converter-field {
-  max-width: 210px;
+  max-width: 280px;
   width: 100%;
 
   .mat-form-field-wrapper {
@@ -243,16 +248,6 @@ apx-chart {
     .mat-form-field-outline {
       display: none;
     }
-
-    //&.mat-focused {
-    //  .mat-form-field-outline-thick {
-    //    color: $yellow-dark;
-    //  }
-    //
-    //  .mat-form-field-label {
-    //    color: $primary-dark;
-    //  }
-    //}
   }
 }
 

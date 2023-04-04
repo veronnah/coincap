@@ -1,7 +1,24 @@
 @import "../../../assets/colors";
 
+.breadcrumbs {
+  margin-top: 74px;
+
+  a {
+    opacity: .6;
+    transition: .4s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  span {
+    opacity: 1;
+  }
+}
+
 .coin-details {
-  margin-top: 140px;
+  margin-top: 100px;
 
   .rank {
     width: 80px;
@@ -77,6 +94,40 @@
       }
     }
   }
+
+  .price-range {
+    .mat-progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+
+    .mat-progress-bar-buffer {
+      background-color: $grey-light-third;
+    }
+
+    .mat-progress-bar-fill {
+      &::after {
+        background: linear-gradient(270deg, #57BD0F 0%, #E6D26E 101.91%);
+      }
+    }
+
+    .progress-annotations {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      margin-top: 6px;
+      color: $grey-medium;
+
+      .price-curr {
+        text-align: center;
+      }
+
+      .price-high {
+        text-align: right;
+      }
+    }
+  }
+
 
   .chart-title {
     h3 {
@@ -177,6 +228,10 @@
       font-weight: 500;
     }
 
+    .coin-info-title {
+      min-width: 100px;
+    }
+
     .coin-info-values {
       a, span {
         line-height: 14px;
@@ -204,6 +259,7 @@
       .curr-symbol {
         background-color: #fff;
         height: 40px;
+        max-width: 90px;
         width: 100%;
         font-size: 14px;
         border-radius: 6px 0 0 6px;
@@ -213,7 +269,7 @@
     }
 
     .converter-bg {
-      max-width: 340px;
+      max-width: 400px;
       width: 100%;
       padding: 30px;
       background-color: $grey-light-second;

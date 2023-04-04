@@ -18,10 +18,15 @@ import { CoinDetailsModel } from "../../models/coinDetails.model";
 })
 export class CoinPageComponent implements OnInit {
   public coin: CoinDetailsModel;
+  public priceRangeValue: number;
+  public coinAPIid: string;
+  public isCopiedToClipboard: boolean;
   public isCoinInfoLoading: boolean = true;
   public initialDate: Date = new Date();
   public isChartDataLoading: boolean = true;
   public currentTab: string;
+  public coinQuantity: number;
+  public currencyQuantity: number;
 
   @ViewChild("chart", {static: false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptionsModel>;
@@ -143,10 +148,11 @@ export class CoinPageComponent implements OnInit {
     if (this.currentTab === 'Price') {
       this.getChartData('1');
     } else if (this.currentTab === 'TradingView') {
+      let symbol: string = 'BINANCE:' + this.coin.symbol + 'USDT';
       this.widgetConfig = {
         widgetType: 'widget',
         theme: Themes.LIGHT,
-        symbol: 'BITSTAMP:BTCUSD',
+        symbol: symbol,
         range: '1d',
         interval: "60",
         allow_symbol_change: true,
@@ -176,13 +182,36 @@ export class CoinPageComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (coin: CoinDetailsModel) => {
+          this.priceRangeValue = (coin.market_data.current_price.usd - coin.market_data.low_24h.usd)
+            / (coin.market_data.high_24h.usd - coin.market_data.low_24h.usd) * 100;
+
           this.coin = coin;
+          this.coinAPIid = coin.id;
           this.isCoinInfoLoading = false;
         },
         error: () => {
           this.isCoinInfoLoading = false;
         }
       });
+  }
+
+  public convert(value: string, currencyType: string): void {
+    switch (currencyType) {
+      case 'crypto':
+        this.currencyQuantity = +value * this.coin.market_data.current_price.usd;
+        break;
+      case 'fiat':
+        this.coinQuantity = +value / this.coin.market_data.current_price.usd;
+        break;
+    }
+  }
+
+  public copyToClipboard(): void {
+    this.isCopiedToClipboard = true;
+
+    setTimeout(() => {
+      this.isCopiedToClipboard = false;
+    }, 10000);
   }
 
 }

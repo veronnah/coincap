@@ -4,8 +4,8 @@ import { HomePageComponent } from "./components/home-page/home-page.component";
 import { CoinPageComponent } from "./components/coin-page/coin-page.component";
 
 const routes: Routes = [
-  {path: '', component: HomePageComponent},
-  {path: 'coins/:id', component: CoinPageComponent},
+  { path: '', component: HomePageComponent },
+  { path: 'coins/:id', component: CoinPageComponent },
 ];
 
 @NgModule({

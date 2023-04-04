@@ -28,6 +28,8 @@ import { TradingviewWidgetModule } from "angular-tradingview-widget";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ErrorInterceptor } from "./shared/interceptors/error.interceptor";
 import { UrlMiddlePartPipe } from './shared/pipes/url-middle-part.pipe';
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { ClipboardModule } from "@angular/cdk/clipboard";
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { UrlMiddlePartPipe } from './shared/pipes/url-middle-part.pipe';
     MatTabsModule,
     TradingviewWidgetModule,
     MatSnackBarModule,
+    MatProgressBarModule,
+    ClipboardModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
