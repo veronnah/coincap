@@ -1,0 +1,32 @@
+@import "../../../../assets/colors";
+
+.header {
+  height: 85px;
+  background-color: #fff;
+  border-bottom: 2px solid #CDEBB7;
+  justify-content: center;
+  font-family: unset;
+
+  .currency-menu {
+    span {
+      font-size: 16px;
+      color: $primary-dark;
+      font-weight: 400;
+      margin-right: 4px;
+    }
+
+    img {
+      transform: rotate(-180deg);
+
+      &.opened {
+        transform: none;
+      }
+    }
+  }
+
+  .logo-text {
+    font-size: 18px;
+    color: #6F5D69;
+    font-weight: 400;
+  }
+}

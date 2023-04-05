@@ -2,6 +2,7 @@ export interface CoinDetailsModel {
   id: string,
   name: string,
   symbol: string,
+  description: any;
   market_cap_rank: number,
   image: ImageModel,
   market_data: MarketDataModel,

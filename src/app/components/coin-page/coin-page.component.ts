@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CoinsService } from "../../services/coins.service";
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ChartComponent } from "ng-apexcharts";
 import { ChartOptionsModel } from "../../models/chartOptions.model";
 import { ITradingViewWidget, Themes } from "angular-tradingview-widget";
@@ -20,13 +20,16 @@ export class CoinPageComponent implements OnInit {
   public coin: CoinDetailsModel;
   public priceRangeValue: number;
   public coinAPIid: string;
-  public isCopiedToClipboard: boolean;
+  public coinDescription: string;
+  public isApiIdCopiedToClipboard: boolean;
+  public isUrlCopiedToClipboard: boolean;
   public isCoinInfoLoading: boolean = true;
   public initialDate: Date = new Date();
   public isChartDataLoading: boolean = true;
   public currentTab: string;
   public coinQuantity: number;
   public currencyQuantity: number;
+  public currentUrl: string;
 
   @ViewChild("chart", {static: false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptionsModel>;
@@ -37,16 +40,25 @@ export class CoinPageComponent implements OnInit {
   constructor(
     private coinsService: CoinsService,
     private route: ActivatedRoute,
+    private router: Router,
     private destroy$: AutoDestroyService,
   ) {
   }
 
   ngOnInit(): void {
+    this.setCurrentUrl();
+    this.getCurrentCoinId();
+  }
+
+  private setCurrentUrl(): void {
+    this.currentUrl = window.location.href;
+  }
+
+  private getCurrentCoinId(): void {
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: Params) => {
         this.currentCoinId = params.id;
-
         this.getCoinInfo(this.currentCoinId);
         this.getChartData('1');
       });
@@ -147,23 +159,21 @@ export class CoinPageComponent implements OnInit {
 
     if (this.currentTab === 'Price') {
       this.getChartData('1');
-    } else if (this.currentTab === 'TradingView') {
-      let symbol: string = 'BINANCE:' + this.coin.symbol + 'USDT';
+    } else {
       this.widgetConfig = {
         widgetType: 'widget',
         theme: Themes.LIGHT,
-        symbol: symbol,
+        symbol: `BINANCE:${this.coin.symbol}USDT`,
         range: '1d',
         interval: "60",
         allow_symbol_change: true,
-        width: 700,
+        width: 962,
       };
     }
   }
 
   public getChartData(days: string): void {
     this.activeOptionButton = days;
-
     this.coinsService.getMarketData(this.currentCoinId, days)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -184,9 +194,9 @@ export class CoinPageComponent implements OnInit {
         next: (coin: CoinDetailsModel) => {
           this.priceRangeValue = (coin.market_data.current_price.usd - coin.market_data.low_24h.usd)
             / (coin.market_data.high_24h.usd - coin.market_data.low_24h.usd) * 100;
-
           this.coin = coin;
           this.coinAPIid = coin.id;
+          this.coinDescription = coin.description.en.split('<a').join('<a target="_blank"');
           this.isCoinInfoLoading = false;
         },
         error: () => {
@@ -206,12 +216,21 @@ export class CoinPageComponent implements OnInit {
     }
   }
 
-  public copyToClipboard(): void {
-    this.isCopiedToClipboard = true;
+  public copyToClipboard(content: string, event?: MouseEvent): void {
+    if (content === 'url') {
+      this.isUrlCopiedToClipboard = true;
+      event?.stopPropagation();
 
-    setTimeout(() => {
-      this.isCopiedToClipboard = false;
-    }, 10000);
+      setTimeout(() => {
+        this.isUrlCopiedToClipboard = false;
+      }, 10000);
+    } else if (content === 'apiId') {
+      this.isApiIdCopiedToClipboard = true;
+
+      setTimeout(() => {
+        this.isApiIdCopiedToClipboard = false;
+      }, 10000);
+    }
   }
 
 }

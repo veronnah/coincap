@@ -8,7 +8,6 @@ import { CoinModel } from "../../../models/coin.model";
 import { MatPaginator } from "@angular/material/paginator";
 import { ChartOptionsModel } from "../../../models/chartOptions.model";
 import { Router } from "@angular/router";
-import { HttpErrorResponse } from "@angular/common/http";
 import { AutoDestroyService } from "../../../services/auto-destroy.service";
 
 declare global {
@@ -81,19 +80,7 @@ export class CoinListTableComponent implements OnInit {
     private router: Router,
     private destroy$: AutoDestroyService,
   ) {
-    window.Apex = {
-      stroke: {
-        width: 2,
-      },
-      markers: {
-        size: 0,
-      },
-      tooltip: {
-        fixed: {
-          enabled: true,
-        }
-      }
-    };
+    this.initApexChart();
   }
 
   ngOnInit(): void {
@@ -105,50 +92,34 @@ export class CoinListTableComponent implements OnInit {
     this.searchValue = '';
 
     this.coinsService.getCoinsList(pageNumber)
-      .pipe(map((result: CoinModel[]) => {
-          return result.map((coin: CoinModel) => {
-            return {
-              id: coin.id,
-              market_cap_rank: coin.market_cap_rank,
-              image: coin.image,
-              name: coin.name,
-              symbol: coin.symbol,
-              current_price: coin.current_price,
-              price_change_percentage_1h_in_currency: coin.price_change_percentage_1h_in_currency,
-              price_change_percentage_24h: coin.price_change_percentage_24h,
-              price_change_percentage_14d_in_currency: coin.price_change_percentage_14d_in_currency / 2,
-              total_volume: coin.total_volume,
-              sparkline_in_7d: coin.sparkline_in_7d,
-            }
-          });
-        }
-      )).pipe(takeUntil(this.destroy$))
+     .pipe(takeUntil(this.destroy$))
       .subscribe({
-      next: (result: CoinModel[]) => {
-        this.coinsList = result;
-        console.log(result)
+        next: (result: CoinModel[]) => {
+          this.coinsList = result;
+          this.setSparklineData();
 
-        this.coinsList.forEach((coin: CoinModel) => {
-          let color: string[];
-          coin.price_change_percentage_14d_in_currency >= 0 ? color = ['#57BD0F'] : color = ['#ED5565'];
+          this.dataSource = new MatTableDataSource(this.coinsList);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        }
+      });
+  }
 
-          return coin.chartOptions = {
-            series: [
-              {
-                data: coin.sparkline_in_7d.price,
-              }
-            ],
-            colors: color,
+  private setSparklineData() {
+    this.coinsList.forEach((coin: CoinModel) => {
+      let color: string[];
+      coin.price_change_percentage_14d_in_currency >= 0 ? color = ['#57BD0F'] : color = ['#ED5565'];
+      coin.chartOptions = {
+        series: [
+          {
+            data: coin.sparkline_in_7d.price,
           }
-        });
-
-        this.dataSource = new MatTableDataSource(this.coinsList);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
+        ],
+        colors: color,
       }
     });
   }
@@ -174,6 +145,22 @@ export class CoinListTableComponent implements OnInit {
     } else {
       this.liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  private initApexChart(): void {
+    window.Apex = {
+      stroke: {
+        width: 2,
+      },
+      markers: {
+        size: 0,
+      },
+      tooltip: {
+        fixed: {
+          enabled: true,
+        }
+      }
+    };
   }
 
 }

@@ -6,27 +6,26 @@
   </li>
 </ul>
 
-<div class="coin-details d-flex g-60">
-  <div class="wrapper">
-    <ng-container *ngIf="!isCoinInfoLoading">
-      <div class="rank d-flex justify-content-center items-center">
-        <span>Rank #</span>
-        <span>{{ coin.market_cap_rank }}</span>
-      </div>
+<div class="coin-details g-60">
+  <div class="wrapper" *ngIf="!isCoinInfoLoading">
+    <div class="rank d-flex justify-content-center items-center">
+      <span>Rank #</span>
+      <span>{{ coin.market_cap_rank }}</span>
+    </div>
 
-      <div class="coin-title d-flex items-center g-14">
+    <div class="coin-title d-flex items-center g-14">
         <span class="coin-img">
           <img [src]="coin.image.thumb" [alt]="coin.symbol+'-logo'">
         </span>
-        <span class="coin-name">{{ coin.name }}</span>
-        <span class="coin-symbol">{{ coin.symbol }}</span>
-      </div>
+      <span class="coin-name">{{ coin.name }}</span>
+      <span class="coin-symbol">{{ coin.symbol }}</span>
+    </div>
 
-      <div class="coin-price d-flex items-center g-14">
-        <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
-        <span class="change-percentage d-flex items-center"
-              [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
-              [class.bear]="coin.market_data.price_change_percentage_24h < 0">
+    <div class="coin-price d-flex items-center g-14">
+      <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
+      <span class="change-percentage d-flex items-center"
+            [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
+            [class.bear]="coin.market_data.price_change_percentage_24h < 0">
           <svg width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M0.750023 5.25C0.446678 5.25 0.173198 5.0673 0.0571128 4.78702C-0.0589722 4.50675 0.00519039
@@ -38,22 +37,21 @@
             {{ coin.market_data.price_change_percentage_24h | abs | number:'1.0-2' }}
           </span>
         </span>
-      </div>
+    </div>
 
-      <div class="price-range">
-        <mat-progress-bar mode="determinate" [value]="priceRangeValue"></mat-progress-bar>
-        <div class="progress-annotations">
-          <div class="price-low">${{ coin.market_data.low_24h.usd | number }}</div>
-          <div class="price-curr">24H Range</div>
-          <div class="price-high">${{ coin.market_data.current_price.usd | number }}</div>
-        </div>
+    <div class="price-range">
+      <mat-progress-bar mode="determinate" [value]="priceRangeValue"></mat-progress-bar>
+      <div class="progress-annotations">
+        <div class="price-low">${{ coin.market_data.low_24h.usd | number }}</div>
+        <div class="price-curr">24H Range</div>
+        <div class="price-high">${{ coin.market_data.current_price.usd | number }}</div>
       </div>
+    </div>
 
-      <div class="chart-title">
-        <h3>{{ coin.name }} Price Chart (USDT)</h3>
-        <p>Last updated {{ initialDate | date : 'shortTime' }}. Currency in USD.</p>
-      </div>
-    </ng-container>
+    <div class="chart-title">
+      <h3>{{ coin.name }} Price Chart (USDT)</h3>
+      <p>Last updated {{ initialDate | date : 'shortTime' }}. Currency in USD.</p>
+    </div>
 
     <div class="coin-chart-wrapper">
       <div class="chart-buttons" *ngIf="currentTab === 'Price'">
@@ -115,6 +113,59 @@
       </mat-tab-group>
       <app-loader class="loader-small" *ngIf="isChartDataLoading && !isChartDataLoading"></app-loader>
     </div>
+
+    <div class="questionnaire d-flex items-center justify-content-between">
+      <div class="questionnaire-title">
+        <h4>How do you feel about {{ coin.name }} today?</h4>
+        <p>Vote to see community's results</p>
+      </div>
+      <div class="questionnaire-actions d-flex">
+        <button class="action-btn cur-point">Good 😍</button>
+        <button class="action-btn cur-point">Bad 😞</button>
+      </div>
+    </div>
+
+    <div class="coin-description">
+      <h3>About</h3>
+      <p [innerHTML]="coinDescription"></p>
+    </div>
+  </div>
+
+  <div class="coin-actions d-flex g-14">
+    <button class="d-flex justify-content-center items-center cur-point" matTooltip="Add to favorite">
+      <img src="./assets/img/favorite-details.svg"
+           alt="Add to favorites">
+    </button>
+    <button [matMenuTriggerFor]="menu"
+            matTooltip="Share"
+            class="d-flex justify-content-center items-center cur-point">
+      <img src="./assets/img/share.svg"
+           alt="Share">
+    </button>
+
+    <mat-menu class="share-menu" #menu="matMenu" xPosition="before">
+      <div class="d-flex g-8">
+        <img src="./assets/img/link.svg" alt="Link">
+        <span>Copy link</span>
+      </div>
+      <br>
+      <div class="link-input d-flex">
+        <input type="text" [(ngModel)]="currentUrl" readonly>
+        <button class="d-flex justify-content-center items-center cur-point">
+          <img *ngIf="!isUrlCopiedToClipboard"
+               [cdkCopyToClipboard]="currentUrl"
+               (click)="copyToClipboard('url', $event)"
+               matTooltip="Click to copy"
+               class="cur-point"
+               src="./assets/img/copy.svg"
+               alt="Copy to clipboard">
+          <img *ngIf="isUrlCopiedToClipboard"
+               class="cur-point"
+               src="./assets/img/copied.svg"
+               alt="Copied to clipboard">
+        </button>
+      </div>
+    </mat-menu>
   </div>
 
   <div class="wrapper">
@@ -166,16 +217,18 @@
           <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">API id</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
-              <span class="d-flex items-center g-8" [(ngModel)]="coinAPIid">
+              <span class="d-flex items-center g-8"
+                    [(ngModel)]="coinAPIid"
+                    ngDefaultControl>
                 {{ coin.id }}
-                <img *ngIf="!isCopiedToClipboard"
+                <img *ngIf="!isApiIdCopiedToClipboard"
                      [cdkCopyToClipboard]="coinAPIid"
-                     (click)="copyToClipboard()"
+                     (click)="copyToClipboard('apiId')"
                      matTooltip="Click to copy"
                      class="cur-point"
                      src="./assets/img/copy.svg"
                      alt="Copy to clipboard">
-                <img *ngIf="isCopiedToClipboard"
+                <img *ngIf="isApiIdCopiedToClipboard"
                      class="cur-point"
                      src="./assets/img/copied.svg"
                      alt="Copied to clipboard">

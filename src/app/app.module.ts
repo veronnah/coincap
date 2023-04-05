@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
-import { HeaderComponent } from "./components/header/header.component";
+import { HeaderComponent } from "./shared/components/header/header.component";
 import { HomePageComponent } from "./components/home-page/home-page.component";
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,6 +30,7 @@ import { ErrorInterceptor } from "./shared/interceptors/error.interceptor";
 import { UrlMiddlePartPipe } from './shared/pipes/url-middle-part.pipe';
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { ClipboardModule } from "@angular/cdk/clipboard";
+import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ClipboardModule } from "@angular/cdk/clipboard";
     MatSnackBarModule,
     MatProgressBarModule,
     ClipboardModule,
+    MatMenuModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
