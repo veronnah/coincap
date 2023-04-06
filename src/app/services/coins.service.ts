@@ -41,6 +41,10 @@ export class CoinsService {
     return this.http.get<CoinDetailsModel>(`${environment.apiUrl}/coins/${id}`);
   }
 
+  public searchCoins(searchValue: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/search?query=${searchValue}`);
+  }
+
   public getMarketData(coinId: string, days: string | undefined): Observable<MarketDataModel> {
     return this.http.get<MarketDataModel>(`${environment.apiUrl}/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`);
   }

@@ -3,18 +3,30 @@ import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { CoinsService } from "../../../services/coins.service";
-import { map, takeUntil } from "rxjs";
+import { debounceTime, Subject, takeUntil } from "rxjs";
 import { CoinModel } from "../../../models/coin.model";
 import { MatPaginator } from "@angular/material/paginator";
 import { ChartOptionsModel } from "../../../models/chartOptions.model";
 import { Router } from "@angular/router";
 import { AutoDestroyService } from "../../../services/auto-destroy.service";
+import { SearchCoinsModel } from "../../../models/searchCoins.model";
 
 declare global {
   interface Window {
     Apex: ChartOptionsModel;
   }
 }
+
+const ALL_COLUMNS = [
+  'market_cap_rank',
+  'name',
+  'current_price',
+  'price_change_percentage_1h_in_currency',
+  'price_change_percentage_24h',
+  'price_change_percentage_14d_in_currency',
+  'total_volume',
+  'sparkline_in_7d',
+];
 
 @Component({
   selector: 'app-coin-list-table',
@@ -25,22 +37,15 @@ export class CoinListTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public displayedColumns: string[] = [
-    'market_cap_rank',
-    'name',
-    'current_price',
-    'price_change_percentage_1h_in_currency',
-    'price_change_percentage_24h',
-    'price_change_percentage_14d_in_currency',
-    'total_volume',
-    'sparkline_in_7d',
-  ];
+  public displayedColumns: string[] = ALL_COLUMNS;
   public coinsList: CoinModel[];
   public dataSource: MatTableDataSource<CoinModel>;
   public clickedRows: Set<CoinModel> = new Set<CoinModel>();
   public currentPage: number = 1;
   public searchValue: string = '';
   public isLoading: boolean = true;
+  public onSearchModelChange: Subject<void> = new Subject<void>();
+  public searchResults: CoinModel[] = [];
 
   public commonLineSparklineOptions: Partial<ChartOptionsModel> = {
     chart: {
@@ -85,6 +90,7 @@ export class CoinListTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCoins(this.currentPage);
+    this.searchModelChangeListener();
   }
 
   public getCoins(pageNumber: number): void {
@@ -92,12 +98,11 @@ export class CoinListTableComponent implements OnInit {
     this.searchValue = '';
 
     this.coinsService.getCoinsList(pageNumber)
-     .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result: CoinModel[]) => {
           this.coinsList = result;
           this.setSparklineData();
-
           this.dataSource = new MatTableDataSource(this.coinsList);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
@@ -124,13 +129,45 @@ export class CoinListTableComponent implements OnInit {
     });
   }
 
-  public filterCoins(): void {
-    const filteredCoins = this.coinsList.filter((coin: CoinModel) => {
-      return coin.name.trim().toLowerCase().includes(this.searchValue.trim().toLowerCase())
-        || coin.symbol.trim().toLowerCase().includes(this.searchValue.trim().toLowerCase());
-    });
+  public searchModelChangeListener(): void {
+    this.onSearchModelChange
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.searchCoins();
+        }
+      });
+  }
 
-    this.dataSource = new MatTableDataSource(filteredCoins);
+  public searchCoins(): void {
+    if (this.searchValue) {
+      this.isLoading = true;
+      this.displayedColumns = [
+        'market_cap_rank',
+        'name',
+      ];
+      this.coinsService.searchCoins(this.searchValue)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (result: SearchCoinsModel) => {
+            this.searchResults = result.coins;
+            this.dataSource = new MatTableDataSource(this.searchResults);
+            this.dataSource.sort = this.sort;
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+            this.setDefaultColumns();
+          }
+        });
+    } else {
+      this.setDefaultColumns();
+    }
+  }
+
+  private setDefaultColumns(): void {
+    this.displayedColumns = ALL_COLUMNS;
+    this.dataSource = new MatTableDataSource(this.coinsList);
     this.dataSource.sort = this.sort;
   }
 

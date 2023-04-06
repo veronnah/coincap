@@ -9,7 +9,6 @@ import { takeUntil } from "rxjs";
 import { MatTabChangeEvent } from "@angular/material/tabs";
 import { MarketDataModel } from "../../models/marketData.model";
 import { CoinDetailsModel } from "../../models/coinDetails.model";
-import { Questionnaire } from "../../models/questionnaire.model";
 
 @Component({
   selector: 'app-coin-page',
@@ -32,14 +31,6 @@ export class CoinPageComponent implements OnInit {
   public currencyQuantity: number;
   public currentUrl: string;
 
-  public questionnaire: Questionnaire = {
-    totalVotesCount: 0,
-    goodVotesCount: 0,
-    badVotesCount: 0,
-    goodVotesPercentage: 0,
-  };
-  public isVoted: boolean;
-
   @ViewChild("chart", {static: false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptionsModel>;
   public activeOptionButton: string;
@@ -57,7 +48,6 @@ export class CoinPageComponent implements OnInit {
   ngOnInit(): void {
     this.setCurrentUrl();
     this.getCurrentCoinId();
-    this.getVotes();
   }
 
   private setCurrentUrl(): void {
@@ -166,6 +156,8 @@ export class CoinPageComponent implements OnInit {
 
   public setChart(tabEvent: MatTabChangeEvent): void {
     this.currentTab = tabEvent.tab.textLabel;
+    let symbol;
+    this.coin.symbol === 'usdt' ? symbol = 'CRYPTOCAP:USDT' : symbol = `BINANCE:${this.coin.symbol}USDT`;
 
     if (this.currentTab === 'Price') {
       this.getChartData('1');
@@ -173,7 +165,7 @@ export class CoinPageComponent implements OnInit {
       this.widgetConfig = {
         widgetType: 'widget',
         theme: Themes.LIGHT,
-        symbol: `BINANCE:${this.coin.symbol}USDT`,
+        symbol: symbol,
         range: '1d',
         interval: "60",
         allow_symbol_change: true,
@@ -243,19 +235,5 @@ export class CoinPageComponent implements OnInit {
     }
   }
 
-  public getVotes(): void {
-    this.questionnaire = new Questionnaire(0, 2, 0, 0);
-  }
-
-  public countVotes(vote: string): void {
-    this.isVoted = true;
-    if (vote === 'good') {
-      this.questionnaire.goodVotesCount++;
-    } else {
-      this.questionnaire.badVotesCount++;
-    }
-    this.questionnaire.totalVotesCount = this.questionnaire.goodVotesCount + this.questionnaire.badVotesCount;
-    this.questionnaire.goodVotesPercentage = this.questionnaire.goodVotesCount / this.questionnaire.totalVotesCount * 100;
-  }
 
 }

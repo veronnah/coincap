@@ -1,17 +1,19 @@
 <div [hidden]="isLoading" class="table-container">
-
   <div class="d-flex justify-content-between mt-20">
     <mat-form-field appearance="outline" class="search-field">
       <mat-label>Search in coins</mat-label>
-      <input [(ngModel)]="searchValue" matInput (keyup)="filterCoins()">
+      <input [(ngModel)]="searchValue"
+             (ngModelChange)="onSearchModelChange.next()"
+             matInput>
     </mat-form-field>
-
     <app-pagination
+      *ngIf="!searchValue"
       [currentPage]="currentPage"
       (getData)="getCoins($event)">
     </app-pagination>
   </div>
   <table mat-table [dataSource]="dataSource"
+         [hidden]="searchResults.length === 0 && searchValue"
          matSort (matSortChange)="announceSortChange($event)"
          class="coin-list-table">
 
@@ -42,7 +44,7 @@
       <td mat-cell *matCellDef="let coin">
         <div class="coin-name d-flex items-center g-14">
           <span class="coin-img">
-            <img [src]="coin.image" [alt]="coin.name+'-logo'">
+            <img [src]="coin.image || coin.thumb" [alt]="coin.name+'-logo'">
           </span>
           <span class="coin-name">{{ coin.name }}</span>
           <span class="coin-symbol">{{ coin.symbol }}</span>
@@ -146,6 +148,7 @@
 
   <div class="pagination d-flex justify-content-center mt-20">
     <app-pagination
+      *ngIf="!searchValue"
       [currentPage]="currentPage"
       (getData)="getCoins($event)">
     </app-pagination>

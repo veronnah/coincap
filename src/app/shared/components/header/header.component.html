@@ -1,5 +1,12 @@
 <mat-toolbar class="header">
   <div class="container d-flex justify-content-between items-center">
+    <button mat-icon-button class="cur-point">
+      <img src="./assets/img/dark-icon.svg" alt="Change theme">
+    </button>
+    <a class="logo d-flex items-center g-14" routerLink="/">
+      <img src="./assets/img/logo.svg" alt="logo">
+      <span class="logo-text">CoinCap</span>
+    </a>
     <div class="currency-menu">
       <div class="menu-trigger cur-point d-flex items-center"
            #menuTrigger="matMenuTrigger"
@@ -7,19 +14,10 @@
         <span>USD</span>
         <img [class.opened]="menuTrigger.menuOpen" src="./assets/img/indicator.svg" alt="Menu">
       </div>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Item 1</button>
-        <button mat-menu-item>Item 2</button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Currency 1</button>
+        <button mat-menu-item>Currency 2</button>
       </mat-menu>
     </div>
-
-    <a class="logo d-flex items-center g-14" routerLink="/">
-      <img src="./assets/img/logo.svg" alt="logo">
-      <span class="logo-text">CoinCap</span>
-    </a>
-
-    <button mat-icon-button class="cur-point">
-      <img src="./assets/img/dark-icon.svg" alt="Change theme">
-    </button>
   </div>
 </mat-toolbar>
