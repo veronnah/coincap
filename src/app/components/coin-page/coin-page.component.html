@@ -114,14 +114,20 @@
       <app-loader class="loader-small" *ngIf="isChartDataLoading && !isChartDataLoading"></app-loader>
     </div>
 
-    <div class="questionnaire d-flex items-center justify-content-between">
-      <div class="questionnaire-title">
-        <h4>How do you feel about {{ coin.name }} today?</h4>
-        <p>Vote to see community's results</p>
+    <div class="questionnaire">
+      <div class="questionnaire-preview d-flex items-center justify-content-between"
+           *ngIf="!isVoted">
+        <div class="questionnaire-title">
+          <h4>How do you feel about {{ coin.name }} today?</h4>
+          <p>Vote to see community's results</p>
+        </div>
+        <div class="questionnaire-actions d-flex g-8">
+          <button class="action-btn cur-point" (click)="countVotes('good')">Good 😍</button>
+          <button class="action-btn cur-point" (click)="countVotes('bad')">Bad 😞</button>
+        </div>
       </div>
-      <div class="questionnaire-actions d-flex">
-        <button class="action-btn cur-point">Good 😍</button>
-        <button class="action-btn cur-point">Bad 😞</button>
+      <div class="questionnaire-progress" *ngIf="isVoted">
+        <mat-progress-bar mode="determinate" [value]="questionnaire.goodVotesPercentage"></mat-progress-bar>
       </div>
     </div>
 

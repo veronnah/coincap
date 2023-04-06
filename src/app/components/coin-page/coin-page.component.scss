@@ -283,8 +283,45 @@
     border-radius: 6px;
     margin-top: 20px;
 
+    h4 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px !important;
+    }
+
     h4, p {
       margin: 0;
+    }
+
+    button {
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid $grey-light;
+      background-color: #fff;
+      padding: 8px;
+      opacity: .8;
+      transition: .3s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .questionnaire-progress {
+      .mat-progress-bar {
+        height: 8px;
+        border-radius: 4px;
+      }
+
+      .mat-progress-bar-buffer {
+        background-color: $bearish;
+      }
+
+      .mat-progress-bar-fill {
+        &::after {
+          background: $bullish;
+        }
+      }
     }
   }
 
