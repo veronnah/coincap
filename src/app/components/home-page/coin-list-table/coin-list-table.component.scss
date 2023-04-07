@@ -6,6 +6,10 @@
 
   .mat-header-cell {
     font-size: 14px;
+
+    &.rank-header-cell {
+      width: 150px;
+    }
   }
 
   .coin-list-table {

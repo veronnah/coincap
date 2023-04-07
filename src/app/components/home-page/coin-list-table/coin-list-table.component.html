@@ -19,6 +19,7 @@
 
     <ng-container matColumnDef="market_cap_rank">
       <th mat-header-cell
+          [class.rank-header-cell]="!(searchResults.length === 0 && searchValue)"
           *matHeaderCellDef
           mat-sort-header="market_cap_rank"
           sortActionDescription="Sort by rank">

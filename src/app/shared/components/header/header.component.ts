@@ -1,16 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { CommonService } from "../../../services/common.service";
+import { takeUntil } from "rxjs";
+import { AutoDestroyService } from "../../../services/auto-destroy.service";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class HeaderComponent implements OnInit {
-  public isOpened: boolean;
+  public currencies: string[];
 
-  constructor() { }
+  constructor(
+    public commonService: CommonService,
+    private destroy$: AutoDestroyService,
+  ) {
+  }
 
   ngOnInit(): void {
+    this.getCurrencies();
+    this.getCurrentCurrency();
+  }
+
+  public getCurrencies(): void {
+    this.commonService.getCurrencies()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (result: string[]) => {
+          this.currencies = result;
+        }
+      });
+  }
+
+  public getCurrentCurrency(): void {
+    this.commonService.currentCurrency$.next(localStorage.getItem('currency') || 'usd');
+  }
+
+  public changeCurrency(currency: string): void {
+    this.commonService.currentCurrency$.next(currency);
+    localStorage.setItem('currency', currency);
   }
 
 }

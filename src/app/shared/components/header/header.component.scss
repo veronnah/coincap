@@ -7,6 +7,11 @@
   justify-content: center;
   font-family: unset;
 
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
   button {
     img {
       width: 20px;
@@ -36,3 +41,19 @@
     font-weight: 400;
   }
 }
+
+.mat-menu-panel  {
+  &.currency-menu-panel {
+    max-width: unset;
+    padding: 10px;
+    -webkit-box-shadow: 0 0 9px -4px rgba(66, 68, 90, 0.48);
+    -moz-box-shadow: 0 0 9px -4px rgba(66, 68, 90, 0.48);
+    box-shadow: 0 0 9px -4px rgba(66, 68, 90, 0.48);
+
+    .mat-menu-content {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+}
+

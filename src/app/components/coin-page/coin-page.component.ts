@@ -235,5 +235,4 @@ export class CoinPageComponent implements OnInit {
     }
   }
 
-
 }
