@@ -15,9 +15,9 @@ export class CoinsService {
   constructor(private http: HttpClient) {
   }
 
-  public getCoinsList(pageNumber: number): Observable<CoinModel[]> {
+  public getCoinsList(pageNumber: number, currency: string): Observable<CoinModel[]> {
     let httpParams = new HttpParams();
-    httpParams = httpParams.append('vs_currency', 'usd');
+    httpParams = httpParams.append('vs_currency', currency);
     httpParams = httpParams.append('order', 'market_cap_desc');
     httpParams = httpParams.append('per_page', '100');
     httpParams = httpParams.append('page', pageNumber);
@@ -56,9 +56,9 @@ export class CoinsService {
     return this.http.get<SearchCoinsModel>(`${environment.apiUrl}/search`, {params: httpParams});
   }
 
-  public getMarketData(coinId: string, days: string | undefined): Observable<MarketDataModel> {
+  public getMarketData(coinId: string, days: string | undefined, currency: string): Observable<MarketDataModel> {
     let httpParams = new HttpParams();
-    httpParams = httpParams.append('vs_currency', 'usd');
+    httpParams = httpParams.append('vs_currency', currency);
     httpParams = httpParams.append('days', days!);
     return this.http.get<MarketDataModel>(`${environment.apiUrl}/coins/${coinId}/market_chart`, {params: httpParams});
   }

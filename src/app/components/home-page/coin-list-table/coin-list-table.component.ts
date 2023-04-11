@@ -10,6 +10,7 @@ import { ChartOptionsModel } from "../../../models/chartOptions.model";
 import { Router } from "@angular/router";
 import { AutoDestroyService } from "../../../services/auto-destroy.service";
 import { SearchCoinsModel } from "../../../models/searchCoins.model";
+import { CommonService } from "../../../services/common.service";
 
 declare global {
   interface Window {
@@ -46,6 +47,7 @@ export class CoinListTableComponent implements OnInit {
   public isLoading: boolean = true;
   public onSearchModelChange: Subject<void> = new Subject<void>();
   public searchResults: CoinModel[] = [];
+  public currentCurrency: string;
 
   public commonLineSparklineOptions: Partial<ChartOptionsModel> = {
     chart: {
@@ -84,20 +86,32 @@ export class CoinListTableComponent implements OnInit {
     private coinsService: CoinsService,
     private router: Router,
     private destroy$: AutoDestroyService,
+    private commonService: CommonService,
   ) {
     this.initApexChart();
   }
 
   ngOnInit(): void {
-    this.getCoins(this.currentPage);
+    this.getCurrentCurrency();
     this.searchModelChangeListener();
+  }
+
+  public getCurrentCurrency(): void {
+    this.commonService.currentCurrency$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (value: string) => {
+          this.currentCurrency = value.toUpperCase();
+          this.getCoins(this.currentPage);
+        }
+      });
   }
 
   public getCoins(pageNumber: number): void {
     this.isLoading = true;
     this.searchValue = '';
 
-    this.coinsService.getCoinsList(pageNumber)
+    this.coinsService.getCoinsList(pageNumber, this.currentCurrency)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result: CoinModel[]) => {

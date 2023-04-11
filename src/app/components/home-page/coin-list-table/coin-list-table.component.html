@@ -63,7 +63,7 @@
       </th>
       <td mat-cell class="align-right-cell"
           *matCellDef="let coin">
-        ${{ coin.current_price | number:'1.0-12' }}
+        {{ coin.current_price | currency: currentCurrency }}
       </td>
     </ng-container>
 
@@ -122,7 +122,7 @@
         Total volume
       </th>
       <td mat-cell class="align-right-cell" *matCellDef="let coin">
-        ${{ coin.total_volume | number }}
+        {{ coin.total_volume | currency: currentCurrency }}
       </td>
     </ng-container>
 

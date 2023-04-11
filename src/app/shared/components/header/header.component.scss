@@ -42,17 +42,33 @@
   }
 }
 
-.mat-menu-panel  {
+.mat-menu-panel {
   &.currency-menu-panel {
     max-width: unset;
-    padding: 10px;
+    padding: 0;
     -webkit-box-shadow: 0 0 9px -4px rgba(66, 68, 90, 0.48);
     -moz-box-shadow: 0 0 9px -4px rgba(66, 68, 90, 0.48);
     box-shadow: 0 0 9px -4px rgba(66, 68, 90, 0.48);
 
     .mat-menu-content {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      h3 {
+        margin: 10px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .suggested-currencies {
+        padding: 10px;
+      }
+
+      .all-currencies {
+        padding: 10px;
+
+        .currencies-wrapper {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+        }
+      }
     }
   }
 }

@@ -22,7 +22,7 @@
     </div>
 
     <div class="coin-price d-flex items-center g-14">
-      <span class="price-num">${{ coin.market_data.current_price.usd | number }}</span>
+      <span class="price-num">{{ coin.market_data.current_price[currentCurrencyKey] | currency: currentCurrency}}</span>
       <span class="change-percentage d-flex items-center"
             [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
             [class.bear]="coin.market_data.price_change_percentage_24h < 0">
@@ -42,15 +42,18 @@
     <div class="price-range">
       <mat-progress-bar mode="determinate" [value]="priceRangeValue"></mat-progress-bar>
       <div class="progress-annotations">
-        <div class="price-low">${{ coin.market_data.low_24h.usd | number }}</div>
+        <div class="price-low">{{ coin.market_data.low_24h[currentCurrencyKey] | currency: currentCurrency }}</div>
         <div class="price-curr">24H Range</div>
-        <div class="price-high">${{ coin.market_data.current_price.usd | number }}</div>
+        <div
+          class="price-high">{{ coin.market_data.current_price[currentCurrencyKey] | currency: currentCurrency }}</div>
       </div>
     </div>
 
     <div class="chart-title">
-      <h3>{{ coin.name }} Price Chart (USDT)</h3>
-      <p>Last updated {{ initialDate | date : 'shortTime' }}. Currency in USD.</p>
+      <h3>{{ coin.name }} Price Chart</h3>
+      <p *ngIf="currentTab === 'Price'">
+        Last updated {{ initialDate | date : 'shortTime' }}. Currency in {{ currentCurrency }}.
+      </p>
     </div>
 
     <div class="coin-chart-wrapper">
@@ -114,7 +117,7 @@
       <app-loader class="loader-small" *ngIf="isChartDataLoading && !isChartDataLoading"></app-loader>
     </div>
 
-    <div class="coin-description">
+    <div class="coin-description" *ngIf="coinDescription">
       <h3>About</h3>
       <p [innerHTML]="coinDescription"></p>
     </div>
@@ -243,7 +246,7 @@
           </div>
           <div class="exchange-input d-flex items-center">
             <div class="curr-symbol d-flex items-center justify-content-center">
-              USD
+              {{ currentCurrency | uppercase }}
             </div>
             <mat-form-field appearance="outline" class="search-field converter-field">
               <input #currencyQuantityInput
@@ -254,7 +257,8 @@
           </div>
 
           <div class="converted-value">
-            1 {{ coin.symbol | uppercase }} = ${{ coin.market_data.current_price.usd | number}}
+            1 {{ coin.symbol | uppercase }}
+            = {{ coin.market_data.current_price[currentCurrencyKey] | currency: currentCurrency }}
           </div>
         </div>
       </div>

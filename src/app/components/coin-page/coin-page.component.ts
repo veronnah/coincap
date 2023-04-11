@@ -9,6 +9,7 @@ import { takeUntil } from "rxjs";
 import { MatTabChangeEvent } from "@angular/material/tabs";
 import { MarketDataModel } from "../../models/marketData.model";
 import { CoinDetailsModel } from "../../models/coinDetails.model";
+import { CommonService } from "../../services/common.service";
 
 @Component({
   selector: 'app-coin-page',
@@ -26,10 +27,12 @@ export class CoinPageComponent implements OnInit {
   public isCoinInfoLoading: boolean = true;
   public initialDate: Date = new Date();
   public isChartDataLoading: boolean = true;
-  public currentTab: string;
+  public currentTab: string = 'Price';
   public coinQuantity: number;
   public currencyQuantity: number;
   public currentUrl: string;
+  public currentCurrency: string;
+  public currentCurrencyKey: string;
 
   @ViewChild("chart", {static: false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptionsModel>;
@@ -42,12 +45,25 @@ export class CoinPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private destroy$: AutoDestroyService,
+    private commonService: CommonService,
   ) {
   }
 
   ngOnInit(): void {
     this.setCurrentUrl();
-    this.getCurrentCoinId();
+    this.getCurrentCurrency();
+  }
+
+  private getCurrentCurrency(): void {
+    this.commonService.currentCurrency$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (value: string) => {
+          this.currentCurrency = value.toUpperCase();
+          this.currentCurrencyKey = value;
+          this.getCurrentCoinId();
+        }
+      });
   }
 
   private setCurrentUrl(): void {
@@ -127,7 +143,7 @@ export class CoinPageComponent implements OnInit {
       yaxis: {
         labels: {
           formatter: function (value: number) {
-            return "$" + value;
+            return "" + value;
           },
         },
       },
@@ -176,11 +192,18 @@ export class CoinPageComponent implements OnInit {
 
   public getChartData(days: string): void {
     this.activeOptionButton = days;
-    this.coinsService.getMarketData(this.currentCoinId, days)
+    this.coinsService.getMarketData(this.currentCoinId, days, this.currentCurrency)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result: MarketDataModel) => {
           this.initChart(result.prices);
+          // this.chartOptions.yaxis = {
+          //   labels: {
+          //     formatter: function (value: number) {
+          //       return "&" + value;
+          //     },
+          //   },
+          // };
           this.isChartDataLoading = false;
         },
         error: () => {
@@ -194,8 +217,8 @@ export class CoinPageComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (coin: CoinDetailsModel) => {
-          this.priceRangeValue = (coin.market_data.current_price.usd - coin.market_data.low_24h.usd)
-            / (coin.market_data.high_24h.usd - coin.market_data.low_24h.usd) * 100;
+          this.priceRangeValue = (coin.market_data.current_price[this.currentCurrencyKey] - coin.market_data.low_24h[this.currentCurrencyKey])
+            / (coin.market_data.high_24h[this.currentCurrencyKey] - coin.market_data.low_24h[this.currentCurrencyKey]) * 100;
           this.coin = coin;
           this.coinAPIid = coin.id;
           this.coinDescription = coin.description.en.split('<a').join('<a target="_blank"');
@@ -210,10 +233,10 @@ export class CoinPageComponent implements OnInit {
   public convert(value: string, currencyType: string): void {
     switch (currencyType) {
       case 'crypto':
-        this.currencyQuantity = +value * this.coin.market_data.current_price.usd;
+        this.currencyQuantity = +value * this.coin.market_data.current_price[this.currentCurrencyKey];
         break;
       case 'fiat':
-        this.coinQuantity = +value / this.coin.market_data.current_price.usd;
+        this.coinQuantity = +value / this.coin.market_data.current_price[this.currentCurrencyKey];
         break;
     }
   }

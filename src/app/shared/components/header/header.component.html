@@ -15,11 +15,40 @@
         <img [class.opened]="menuTrigger.menuOpen" src="./assets/img/indicator.svg" alt="Menu">
       </div>
       <mat-menu #menu="matMenu" xPosition="before" class="currency-menu-panel">
-        <button mat-menu-item
-                *ngFor="let currency of currencies"
-                (click)="changeCurrency(currency)">
-          {{ currency | uppercase }}
-        </button>
+        <div class="suggested-currencies">
+          <h3>Suggested Currencies 🔥</h3>
+          <button mat-menu-item
+                  (click)="changeCurrency('usd')">
+            {{ 'usd' | uppercase }}
+            <span>US Dollar</span>
+          </button>
+          <button mat-menu-item
+                  (click)="changeCurrency('eur')">
+            {{ 'eur' | uppercase }}
+            <span>Euro</span>
+          </button>
+          <button mat-menu-item
+                  (click)="changeCurrency('pln')">
+            {{ 'pln' | uppercase }}
+            <span>Polish zloty</span>
+          </button>
+          <button mat-menu-item
+                  (click)="changeCurrency('uah')">
+            {{ 'uah' | uppercase }}
+            <span>Ukrainian hryvnia</span>
+          </button>
+        </div>
+        <hr>
+        <div class="all-currencies">
+          <h3>All Currencies</h3>
+          <div class="currencies-wrapper">
+            <button mat-menu-item
+                    *ngFor="let currency of currencies"
+                    (click)="changeCurrency(currency)">
+              {{ currency | uppercase }}
+            </button>
+          </div>
+        </div>
       </mat-menu>
     </div>
   </div>
