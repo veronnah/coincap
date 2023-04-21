@@ -21,6 +21,7 @@ $coincap-theme: mat.define-light-theme((
 
 * {
   box-sizing: border-box;
+  transition: .3s background-color, color;
 }
 
 html, body {
@@ -31,7 +32,115 @@ html, body {
 body {
   margin: 0;
   font-family: 'Solway', serif;
-  color: $primary-dark;
+
+  &.dark {
+    color: #fff;
+    background-color: $dark-bg;
+
+    .mat-menu-panel {
+      background-color: $dark-bg;
+      -webkit-box-shadow: 0 0 9px -4px rgba(241, 241, 241, 0.48);
+      -moz-box-shadow: 0 0 9px -4px rgba(241, 241, 241, 0.48);
+      box-shadow: 0 0 9px -4px rgba(241, 241, 241, 0.48);
+    }
+
+    .header {
+      border-bottom: unset;
+    }
+
+    button, span, table, input, p {
+      color: #fff !important;
+    }
+
+    button {
+      &.mat-button-disabled {
+        opacity: .4;
+      }
+    }
+
+    .coin-details {
+      .coin-chart-wrapper {
+        .chart-buttons {
+          button {
+            background-color: $dark-bg;
+
+            &.active {
+              background-color: $yellow-dark;
+              border-color: $yellow-dark;
+            }
+          }
+        }
+      }
+    }
+
+    span {
+      &.coin-symbol {
+        color: $grey-medium !important;
+      }
+    }
+
+    tbody {
+      td, tr {
+        color: $grey-light;
+      }
+    }
+
+    thead {
+      tr, td, .mat-header-cell {
+        color: $grey-light;
+      }
+    }
+
+    th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+      border-bottom: 1px solid rgba(211, 198, 198, 0.12) !important;
+    }
+
+    mat-label {
+      color: $grey-light;
+    }
+
+    .mat-form-field-outline-thick {
+      color: $grey-medium;
+    }
+
+    .mat-form-field-appearance-outline {
+      .mat-form-field-outline {
+        color: rgba(211, 198, 198, 0.12);
+      }
+    }
+
+    .search-field {
+      &.mat-form-field-appearance-outline {
+        &.mat-focused {
+          .mat-form-field-outline-thick {
+            color: #bd9a03;
+          }
+        }
+      }
+    }
+
+    .scroll-top-circle {
+      background-color: $dark-bg;
+    }
+
+    .apexcharts-tooltip {
+      background-color: #2d3436;
+
+      &.apexcharts-theme-light {
+        .apexcharts-tooltip-title {
+          background-color: $dark-bg;
+        }
+      }
+    }
+
+    .apexcharts-yaxis {
+      color: #fff !important;
+    }
+
+    .mat-tab-label, .mat-tab-link {
+      color: #fff;
+    }
+  }
 }
 
 a {
@@ -192,6 +301,8 @@ apx-chart {
 }
 
 .search-field {
+  font-family: unset;
+
   .mat-form-field-flex {
     height: 40px;
 
@@ -217,7 +328,7 @@ apx-chart {
       }
 
       .mat-form-field-label {
-        color: $primary-dark;
+        color: inherit;
       }
     }
   }

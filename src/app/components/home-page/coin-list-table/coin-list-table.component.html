@@ -1,7 +1,10 @@
 <div [hidden]="isLoading" class="table-container">
   <div class="d-flex justify-content-between mt-20">
     <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Search in coins</mat-label>
+      <mat-label class="d-flex items-center g-8">
+        <mat-icon style="font-size: 18px">search</mat-icon>
+        Search in coins
+      </mat-label>
       <input [(ngModel)]="searchValue"
              (ngModelChange)="onSearchModelChange.next()"
              matInput>

@@ -1,7 +1,8 @@
 <mat-toolbar class="header">
   <div class="container justify-content-between items-center">
     <button mat-icon-button class="cur-point">
-      <img src="./assets/img/dark-icon.svg" alt="Change theme">
+      <img *ngIf="themeService.currentTheme === 'light'" (click)="themeService.setTheme('dark')" src="./assets/img/dark-icon.svg" alt="Change theme">
+      <img *ngIf="themeService.currentTheme === 'dark'" (click)="themeService.setTheme('light')" src="./assets/img/light-icon.svg" alt="Change theme">
     </button>
     <a class="logo d-flex justify-content-center items-center g-14" routerLink="/">
       <img src="./assets/img/logo.svg" alt="logo">
@@ -11,8 +12,10 @@
       <div class="menu-trigger cur-point d-flex items-center"
            #menuTrigger="matMenuTrigger"
            [matMenuTriggerFor]="menu">
-        <span>{{ commonService.currentCurrency$ | async | uppercase}}</span>
-        <img [class.opened]="menuTrigger.menuOpen" src="./assets/img/indicator.svg" alt="Menu">
+        <span>{{ commonService.currentCurrency$ | async | uppercase }}</span>
+        <img [class.opened]="menuTrigger.menuOpen"
+             [class.dark-theme]="themeService.currentTheme==='dark'"
+             src="./assets/img/indicator.svg" alt="Menu">
       </div>
       <mat-menu #menu="matMenu" xPosition="before" class="currency-menu-panel">
         <div class="suggested-currencies">
@@ -38,7 +41,6 @@
             <span>Ukrainian hryvnia</span>
           </button>
         </div>
-        <hr>
         <div class="all-currencies">
           <h3>All Currencies</h3>
           <div class="currencies-wrapper">
