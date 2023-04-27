@@ -31,6 +31,9 @@ import { UrlMiddlePartPipe } from './shared/pipes/url-middle-part.pipe';
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { ClipboardModule } from "@angular/cdk/clipboard";
 import { MatMenuModule } from "@angular/material/menu";
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { DarkModeToggleComponent } from './shared/components/dark-mode-toggle/dark-mode-toggle.component';
+import { DARK_MODE_OPTIONS } from "angular-dark-mode";
 
 @NgModule({
   declarations: [
@@ -44,6 +47,8 @@ import { MatMenuModule } from "@angular/material/menu";
     CoinPageComponent,
     AbsPipe,
     UrlMiddlePartPipe,
+    FooterComponent,
+    DarkModeToggleComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,7 +73,18 @@ import { MatMenuModule } from "@angular/material/menu";
     MatMenuModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {
+      provide: DARK_MODE_OPTIONS,
+      useValue: {
+        darkModeClass: 'dark-mode',
+        lightModeClass: 'light-mode',
+      }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

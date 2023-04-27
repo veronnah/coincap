@@ -1,0 +1,13 @@
+<button
+  mat-icon-button
+  class="theme-change-btn cur-point">
+  <input
+    #themeCheckbox
+    id="darkMode-checkbox"
+    class="toggle cur-point"
+    type="checkbox"
+    [checked]="darkMode$ | async"
+    (change)="onToggle()"/>
+  <img *ngIf="!themeCheckbox.checked" src="./assets/img/dark-icon.svg" alt="Change theme">
+  <img *ngIf="themeCheckbox.checked" src="./assets/img/light-icon.svg" alt="Change theme">
+</button>

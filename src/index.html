@@ -11,17 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <script>
-    const theme = localStorage.getItem('theme') || 'light';
-    document.documentElement.dataset.theme = theme;
-    const body = document.getElementsByTagName('body')[0];
-
-    if (theme === 'dark') {
-      body.classList.add('dark');
-    } else {
-      body.classList.remove('dark');
-    }
-  </script>
   <app-root></app-root>
 </body>
 </html>

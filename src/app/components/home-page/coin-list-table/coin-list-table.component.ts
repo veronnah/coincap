@@ -190,6 +190,9 @@ export class CoinListTableComponent implements OnInit {
     this.router.navigate(['coins', row.id]).then();
   }
 
+  public addToFavorite(coin: CoinModel, event: any): void {
+  }
+
   public announceSortChange(sortState: Sort): void {
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);

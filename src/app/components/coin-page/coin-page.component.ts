@@ -115,11 +115,11 @@ export class CoinPageComponent implements OnInit {
       },
       grid: {
         show: true,
-        borderColor: '#f3f3f3',
+        borderColor: '#777777',
         xaxis: {
           lines: {
             show: false,
-          }
+          },
         },
         yaxis: {
           lines: {
@@ -142,6 +142,9 @@ export class CoinPageComponent implements OnInit {
       },
       yaxis: {
         labels: {
+          style: {
+            colors: ['#fff'],
+          },
           formatter: function (value: number) {
             return "" + value;
           },
@@ -197,13 +200,16 @@ export class CoinPageComponent implements OnInit {
       .subscribe({
         next: (result: MarketDataModel) => {
           this.initChart(result.prices);
-          // this.chartOptions.yaxis = {
-          //   labels: {
-          //     formatter: function (value: number) {
-          //       return "&" + value;
-          //     },
-          //   },
-          // };
+          this.chartOptions.yaxis = {
+            labels: {
+              style: {
+                colors: ['#fff'],
+              },
+              formatter: function (value: number) {
+                return "" + value;
+              },
+            },
+          };
           this.isChartDataLoading = false;
         },
         error: () => {

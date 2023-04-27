@@ -21,7 +21,6 @@ $coincap-theme: mat.define-light-theme((
 
 * {
   box-sizing: border-box;
-  transition: .3s background-color, color;
 }
 
 html, body {
@@ -33,7 +32,16 @@ body {
   margin: 0;
   font-family: 'Solway', serif;
 
-  &.dark {
+  &:not(.dark-mode-preloading) {
+    transition: all 0.3s linear;
+  }
+
+  &.light-mode {
+    color: $primary-dark;
+    background-color: #fff;
+  }
+
+  &.dark-mode {
     color: #fff;
     background-color: $dark-bg;
 
@@ -46,6 +54,11 @@ body {
 
     .header {
       border-bottom: unset;
+
+      .menu-trigger-img {
+        filter: invert(1);
+        opacity: .7;
+      }
     }
 
     button, span, table, input, p {
@@ -163,6 +176,13 @@ ul {
   width: 100%;
   margin: 0 auto;
   padding: 0 10px;
+  flex: 1 1 auto;
+}
+
+.wrapper-global {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper {
@@ -359,6 +379,16 @@ apx-chart {
     .mat-form-field-outline {
       display: none;
     }
+  }
+}
+
+footer {
+  height: 60px;
+  border-top: 1px solid $grey-light-second;
+
+  p {
+    color: $grey-medium;
+    font-weight: 300;
   }
 }
 

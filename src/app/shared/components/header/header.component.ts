@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonService } from "../../../services/common.service";
 import { takeUntil } from "rxjs";
 import { AutoDestroyService } from "../../../services/auto-destroy.service";
-import { ThemeService } from "../../../services/theme.service";
 
 @Component({
   selector: 'app-header',
@@ -16,14 +15,12 @@ export class HeaderComponent implements OnInit {
   constructor(
     public commonService: CommonService,
     private destroy$: AutoDestroyService,
-    public themeService: ThemeService,
   ) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getCurrencies();
     this.getCurrentCurrency();
-    this.themeService.setTheme();
   }
 
   public getCurrencies(): void {

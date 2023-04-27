@@ -31,6 +31,7 @@
       <td mat-cell *matCellDef="let coin">
         <span class="mr-14 cur-point"
               matTooltip="Add to favorite"
+              (click)="addToFavorite(coin, $event)"
               [matTooltipPosition]="'below'">
           <img src="./assets/img/favorite.svg" alt="add to favorite">
         </span>
