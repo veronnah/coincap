@@ -19,7 +19,7 @@ export class CoinsService {
     let httpParams = new HttpParams();
     httpParams = httpParams.append('vs_currency', currency);
     httpParams = httpParams.append('order', 'market_cap_desc');
-    httpParams = httpParams.append('per_page', '30');
+    httpParams = httpParams.append('per_page', '20');
     httpParams = httpParams.append('page', pageNumber);
     httpParams = httpParams.append('sparkline', 'true');
     httpParams = httpParams.append('price_change_percentage', '1h,24h,7d,14d');

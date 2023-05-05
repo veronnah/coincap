@@ -10,6 +10,7 @@ import { MatTabChangeEvent } from "@angular/material/tabs";
 import { MarketDataModel } from "../../models/marketData.model";
 import { CoinDetailsModel } from "../../models/coinDetails.model";
 import { CommonService } from "../../services/common.service";
+import { DarkModeService } from "angular-dark-mode";
 
 @Component({
   selector: 'app-coin-page',
@@ -33,6 +34,7 @@ export class CoinPageComponent implements OnInit {
   public currentUrl: string;
   public currentCurrency: string;
   public currentCurrencyKey: string;
+  public isDarkMode: boolean;
 
   @ViewChild("chart", {static: false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptionsModel>;
@@ -40,18 +42,33 @@ export class CoinPageComponent implements OnInit {
   public currentCoinId: string;
   public widgetConfig: ITradingViewWidget;
 
+  private currentSymbol: string;
+
   constructor(
     private coinsService: CoinsService,
     private route: ActivatedRoute,
     private router: Router,
     private destroy$: AutoDestroyService,
     private commonService: CommonService,
+    private darkModeService: DarkModeService,
   ) {
   }
 
   ngOnInit(): void {
     this.setCurrentUrl();
     this.getCurrentCurrency();
+    this.listenToThemeChange();
+  }
+
+  private listenToThemeChange(): void {
+    this.darkModeService.darkMode$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (darkModeEnabled: boolean) => {
+          this.isDarkMode = darkModeEnabled;
+          this.setWidgetConfig();
+        }
+      });
   }
 
   private getCurrentCurrency(): void {
@@ -115,7 +132,7 @@ export class CoinPageComponent implements OnInit {
       },
       grid: {
         show: true,
-        borderColor: '#777777',
+        borderColor: '#494949',
         xaxis: {
           lines: {
             show: false,
@@ -175,22 +192,25 @@ export class CoinPageComponent implements OnInit {
 
   public setChart(tabEvent: MatTabChangeEvent): void {
     this.currentTab = tabEvent.tab.textLabel;
-    let symbol;
-    this.coin.symbol === 'usdt' ? symbol = 'CRYPTOCAP:USDT' : symbol = `BINANCE:${this.coin.symbol}USDT`;
+    this.coin.symbol === 'usdt' ? this.currentSymbol = 'CRYPTOCAP:USDT' : this.currentSymbol = `BINANCE:${this.coin.symbol}USDT`;
 
     if (this.currentTab === 'Price') {
       this.getChartData('1');
     } else {
-      this.widgetConfig = {
-        widgetType: 'widget',
-        theme: Themes.LIGHT,
-        symbol: symbol,
-        range: '1d',
-        interval: "60",
-        allow_symbol_change: true,
-        width: 962,
-      };
+      this.setWidgetConfig();
     }
+  }
+
+  private setWidgetConfig(): void {
+    this.widgetConfig = {
+      widgetType: 'widget',
+      theme: this.isDarkMode ? Themes.DARK : Themes.LIGHT || 'Light',
+      symbol: this.currentSymbol,
+      range: '1d',
+      interval: "60",
+      allow_symbol_change: true,
+      width: 962,
+    };
   }
 
   public getChartData(days: string): void {
@@ -203,13 +223,22 @@ export class CoinPageComponent implements OnInit {
           this.chartOptions.yaxis = {
             labels: {
               style: {
-                colors: ['#fff'],
+                colors: ['#b0b0b0'],
               },
               formatter: function (value: number) {
                 return "" + value;
               },
             },
           };
+          this.chartOptions.xaxis = {
+            type: "datetime",
+            tickAmount: 6,
+            labels: {
+              style: {
+                colors: '#b0b0b0',
+              },
+            }
+          }
           this.isChartDataLoading = false;
         },
         error: () => {

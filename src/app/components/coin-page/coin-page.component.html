@@ -23,7 +23,7 @@
 
     <div class="coin-price d-flex items-center g-14">
       <span class="price-num">{{ coin.market_data.current_price[currentCurrencyKey] | currency: currentCurrency}}</span>
-      <span class="change-percentage d-flex items-center"
+      <div class="change-percentage d-flex items-center"
             [class.bull]="coin.market_data.price_change_percentage_24h >= 0"
             [class.bear]="coin.market_data.price_change_percentage_24h < 0">
           <svg width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,10 +33,10 @@
                   3.96968C8.99482 4.18418 9.05903 4.50675 8.94293 4.78702C8.82683 5.0673 8.55338 5.25 8.25 5.25H0.750023Z"
                   fill="#3F3E3E"/>
           </svg>
-          <span>
+          <div class="price-change-indicator">
             {{ coin.market_data.price_change_percentage_24h | abs | number:'1.0-2' }}
-          </span>
-        </span>
+          </div>
+        </div>
     </div>
 
     <div class="price-range">
@@ -137,7 +137,7 @@
 
     <mat-menu class="share-menu" #menu="matMenu" xPosition="before">
       <div class="d-flex g-8">
-        <img src="./assets/img/link.svg" alt="Link">
+        <img class="link-img" src="./assets/img/link.svg" alt="Link">
         <span>Copy link</span>
       </div>
       <br>
@@ -148,7 +148,7 @@
                [cdkCopyToClipboard]="currentUrl"
                (click)="copyToClipboard('url', $event)"
                matTooltip="Click to copy"
-               class="cur-point"
+               class="copy-img cur-point"
                src="./assets/img/copy.svg"
                alt="Copy to clipboard">
           <img *ngIf="isUrlCopiedToClipboard"
@@ -168,7 +168,10 @@
           <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Website</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
-              <a [href]="coin.links.homepage[0]" target="_blank">
+              <a [href]="coin.links.homepage[0]"
+                 [class.dark-mode]="isDarkMode"
+                 [class.light-mode]="isDarkMode === false"
+                 target="_blank">
                 {{ coin.links.homepage[0] | urlMiddlePart }}
               </a>
             </div>
@@ -176,12 +179,18 @@
           <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Community</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
-              <a *ngIf="coin.links.twitter_screen_name" [href]="'https://twitter.com/'+coin.links.twitter_screen_name"
+              <a *ngIf="coin.links.twitter_screen_name"
+                 [href]="'https://twitter.com/'+coin.links.twitter_screen_name"
+                 [class.dark-mode]="isDarkMode"
+                 [class.light-mode]="isDarkMode === false"
                  target="_blank">
                 <img src="./assets/img/twitter.svg" alt="Twitter">
                 Twitter
               </a>
-              <a *ngIf="coin.links.facebook_username" [href]="'https://www.facebook.com/'+coin.links.facebook_username"
+              <a *ngIf="coin.links.facebook_username"
+                 [href]="'https://www.facebook.com/'+coin.links.facebook_username"
+                 [class.dark-mode]="isDarkMode"
+                 [class.light-mode]="isDarkMode === false"
                  target="_blank">
                 <img src="./assets/img/facebook.svg" alt="Facebook">
                 Facebook
@@ -192,7 +201,9 @@
                *ngIf="coin.categories.length > 0">
             <div class="coin-info-title">Tags</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
-              <span *ngFor="let cat of coin.categories">
+              <span *ngFor="let cat of coin.categories"
+                    [class.dark-mode]="isDarkMode"
+                    [class.light-mode]="isDarkMode === false">
                 {{ cat }}
               </span>
             </div>
@@ -200,7 +211,10 @@
           <div class="d-flex g-14 items-baseline">
             <div class="coin-info-title">Source Code</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
-              <a [href]="coin.links.repos_url.github[0]" target="_blank">
+              <a [href]="coin.links.repos_url.github[0]"
+                 [class.dark-mode]="isDarkMode"
+                 [class.light-mode]="isDarkMode === false"
+                 target="_blank">
                 <img src="./assets/img/git.svg" alt="Github">
                 Github
               </a>
@@ -210,6 +224,8 @@
             <div class="coin-info-title">API id</div>
             <div class="coin-info-values d-flex flex-wrap g-8">
               <span class="d-flex items-center g-8"
+                    [class.dark-mode]="isDarkMode"
+                    [class.light-mode]="isDarkMode === false"
                     [(ngModel)]="coinAPIid"
                     ngDefaultControl>
                 {{ coin.id }}

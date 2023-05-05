@@ -50,6 +50,29 @@ body {
       -webkit-box-shadow: 0 0 9px -4px rgba(241, 241, 241, 0.48);
       -moz-box-shadow: 0 0 9px -4px rgba(241, 241, 241, 0.48);
       box-shadow: 0 0 9px -4px rgba(241, 241, 241, 0.48);
+
+      &.currency-menu-panel {
+        .mat-menu-content {
+          .suggested-currencies {
+            border-bottom: 1px solid #4e4e4e;
+          }
+        }
+      }
+    }
+
+    .apexcharts-menu {
+      transition: unset;
+
+      &.apexcharts-menu-open {
+        background-color: #2d3436 !important;
+        border-color: #2d3436 !important;
+      }
+
+      .apexcharts-menu-item {
+        &:hover {
+          background-color: #2d3436 !important;
+        }
+      }
     }
 
     .header {
@@ -61,8 +84,12 @@ body {
       }
     }
 
-    button, span, table, input, p {
+    button, span, table, input {
       color: #fff !important;
+    }
+
+    p {
+      color: #c8c8c8 !important;
     }
 
     button {
@@ -104,8 +131,20 @@ body {
       }
     }
 
-    th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
-      border-bottom: 1px solid rgba(211, 198, 198, 0.12) !important;
+    th {
+      &.mat-header-cell {
+        border-bottom: 1px solid rgba(211, 198, 198, 0.12) !important;
+      }
+    }
+
+    td {
+      &.mat-cell {
+        border-bottom: 1px solid rgba(211, 198, 198, 0.12) !important;
+      }
+
+      &.mat-footer-cell {
+        border-bottom: 1px solid rgba(211, 198, 198, 0.12) !important;
+      }
     }
 
     mat-label {
@@ -152,6 +191,123 @@ body {
 
     .mat-tab-label, .mat-tab-link {
       color: #fff;
+    }
+
+    .coin-details .coin-chart-wrapper .mat-tab-header .mat-tab-label-container .mat-tab-labels .mat-tab-label {
+      border: 1px solid #394447;
+    }
+
+    .coin-details {
+      .coin-chart-wrapper {
+        .mat-tab-header {
+          .mat-tab-label-container {
+            .mat-tab-labels {
+              .mat-tab-label {
+                border: 1px solid #394447;
+
+                &.mat-tab-label-active {
+                  background-color: #bfa753;
+                }
+              }
+            }
+          }
+        }
+
+        .chart-buttons {
+          button {
+            border: 1px solid #394447;
+
+            &.active {
+              background-color: #bfa753;
+              border-color: #bfa753;
+            }
+          }
+        }
+      }
+    }
+
+    .coin-details {
+      .coin-info {
+        img {
+          filter: invert(1);
+        }
+      }
+
+      .coin-actions {
+        button {
+          background-color: #3c4547;
+          border: 1px solid #3c4547;
+        }
+      }
+    }
+
+    .coin-details {
+      .price-range {
+        .progress-annotations {
+          color: #a2a2a2;
+        }
+
+        .mat-progress-bar-buffer {
+          background-color: #353c3d;
+        }
+      }
+
+      .coin-converter {
+        .converter-bg {
+          background-color: #3c4547;
+        }
+
+        .exchange-input {
+          .curr-symbol {
+            background-color: #343a3c;
+            border-right: 1px solid #434a4d;
+            color: #b0b0b0;
+          }
+        }
+      }
+    }
+
+    .converter-field {
+      .mat-form-field-wrapper {
+        background-color: #343a3c;
+      }
+    }
+
+    .search-field {
+      .mat-input-element {
+        caret-color: $grey-medium;
+      }
+    }
+
+    .apexcharts-grid-borders {
+      line {
+        stroke: transparent;
+      }
+    }
+
+    .share-menu {
+      img {
+        &.link-img, &.copy-img {
+          filter: invert(1);
+        }
+      }
+
+      &.mat-menu-panel {
+        .link-input {
+          input {
+            background-color: #77856f;
+          }
+
+          button {
+            background-color: #77856f;
+            border: 1px solid #77856f;
+          }
+        }
+      }
+    }
+
+    footer {
+      border-top: 1px solid #4e4e4e;
     }
   }
 }

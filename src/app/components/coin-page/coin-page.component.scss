@@ -48,6 +48,7 @@
 .coin-details {
   position: relative;
   margin-top: 100px;
+  padding-bottom: 60px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 
@@ -123,7 +124,7 @@
     }
 
     .change-percentage {
-      span {
+      .price-change-indicator {
         margin-left: 4px;
       }
 
@@ -358,10 +359,20 @@
         line-height: 14px;
         font-size: 14px;
         padding: 8px;
-        background-color: $grey-light-second;
         opacity: .8;
         border-radius: 4px;
-        transition: .3s all;
+        transition: .3s opacity;
+        background-color: $grey-light-second;
+
+        &.light-mode {
+          color: inherit;
+          background-color: $grey-light-second;
+        }
+
+        &.dark-mode {
+          color: #c8c8c8;
+          background-color: #40494b;
+        }
 
         &:hover {
           opacity: 1;
