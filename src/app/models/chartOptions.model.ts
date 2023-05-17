@@ -9,6 +9,7 @@ import {
   ApexYAxis,
   ApexMarkers,
   ApexGrid,
+  ApexTheme,
 } from "ng-apexcharts";
 
 export interface ChartOptionsModel {
@@ -28,4 +29,5 @@ export interface ChartOptionsModel {
   fill?: ApexFill;
   tooltip?: ApexTooltip;
   grid?: ApexGrid,
+  theme?: ApexTheme,
 }

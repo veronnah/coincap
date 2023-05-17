@@ -11,6 +11,7 @@ import { MarketDataModel } from "../../models/marketData.model";
 import { CoinDetailsModel } from "../../models/coinDetails.model";
 import { CommonService } from "../../services/common.service";
 import { DarkModeService } from "angular-dark-mode";
+import { chartOptions } from "../../../assets/properties/chart-options";
 
 @Component({
   selector: 'app-coin-page',
@@ -19,6 +20,8 @@ import { DarkModeService } from "angular-dark-mode";
   encapsulation: ViewEncapsulation.None,
 })
 export class CoinPageComponent implements OnInit {
+  @ViewChild("chart", {static: false}) chart: ChartComponent;
+
   public coin: CoinDetailsModel;
   public priceRangeValue: number;
   public coinAPIid: string;
@@ -35,9 +38,7 @@ export class CoinPageComponent implements OnInit {
   public currentCurrency: string;
   public currentCurrencyKey: string;
   public isDarkMode: boolean;
-
-  @ViewChild("chart", {static: false}) chart: ChartComponent;
-  public chartOptions: Partial<ChartOptionsModel>;
+  public chartOptions: Partial<ChartOptionsModel> = chartOptions;
   public activeOptionButton: string;
   public currentCoinId: string;
   public widgetConfig: ITradingViewWidget;
@@ -50,7 +51,7 @@ export class CoinPageComponent implements OnInit {
     private router: Router,
     private destroy$: AutoDestroyService,
     private commonService: CommonService,
-    private darkModeService: DarkModeService,
+    public darkModeService: DarkModeService,
   ) {
   }
 
@@ -67,6 +68,9 @@ export class CoinPageComponent implements OnInit {
         next: (darkModeEnabled: boolean) => {
           this.isDarkMode = darkModeEnabled;
           this.setWidgetConfig();
+          this.chartOptions.grid = {
+            borderColor: this.isDarkMode ? '#494949' : '#eeeeee',
+          }
         }
       });
   }
@@ -98,96 +102,12 @@ export class CoinPageComponent implements OnInit {
   }
 
   public initChart(data: number[]): void {
-    this.chartOptions = {
-      series: [
-        {
-          name: 'Price',
-          data: data,
-        }
-      ],
-      colors: ['#57BD0F'],
-      chart: {
-        type: "area",
-        height: 500,
-        fontFamily: 'Solway, sans-serif',
-        animations: {
-          enabled: false,
-        },
-        toolbar: {
-          show: true,
-          offsetX: 0,
-          offsetY: 0,
-          tools: {
-            download: `<img src="./assets/img/download.svg" width="16" alt="Download">`,
-            selection: true,
-            zoom: `<img src="./assets/img/selection.svg" width="16" alt="Selection zoom">`,
-            zoomin: `<img src="./assets/img/zoom-in.svg" width="20" alt="Zoom in">`,
-            zoomout: `<img src="./assets/img/zoom-out.svg" width="20" alt="Zoom out">`,
-            pan: false,
-            reset: `<img src="./assets/img/reset.svg" width="16" alt="Reset">`,
-            customIcons: [],
-          },
-          autoSelected: 'zoom'
-        },
-      },
-      grid: {
-        show: true,
-        borderColor: '#494949',
-        xaxis: {
-          lines: {
-            show: false,
-          },
-        },
-        yaxis: {
-          lines: {
-            show: true,
-          }
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        width: 2,
-      },
-      markers: {
-        size: 0,
-      },
-      xaxis: {
-        type: "datetime",
-        tickAmount: 6,
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: ['#fff'],
-          },
-          formatter: function (value: number) {
-            return "" + value;
-          },
-        },
-      },
-      tooltip: {
-        enabled: true,
-        intersect: false,
-        followCursor: false,
-        fixed: {
-          enabled: false,
-        },
-        x: {
-          format: 'dd MMM yyyy',
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.9,
-          stops: [0, 100]
-        }
-      },
-    };
+    this.chartOptions.series = [
+      {
+        name: 'Price',
+        data: data,
+      }
+    ];
   }
 
   public setChart(tabEvent: MatTabChangeEvent): void {
@@ -220,25 +140,6 @@ export class CoinPageComponent implements OnInit {
       .subscribe({
         next: (result: MarketDataModel) => {
           this.initChart(result.prices);
-          this.chartOptions.yaxis = {
-            labels: {
-              style: {
-                colors: ['#b0b0b0'],
-              },
-              formatter: function (value: number) {
-                return "" + value;
-              },
-            },
-          };
-          this.chartOptions.xaxis = {
-            type: "datetime",
-            tickAmount: 6,
-            labels: {
-              style: {
-                colors: '#b0b0b0',
-              },
-            }
-          }
           this.isChartDataLoading = false;
         },
         error: () => {

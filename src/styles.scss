@@ -455,6 +455,16 @@ tr {
   }
 }
 
+.cdk-overlay-pane {
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+.mat-progress-bar-background {
+  fill: none;
+}
+
 apx-chart {
   &.mini-sparkline {
     div {
