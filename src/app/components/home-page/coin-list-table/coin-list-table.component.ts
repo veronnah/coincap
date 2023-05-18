@@ -109,6 +109,7 @@ export class CoinListTableComponent implements OnInit {
 
   public getCoins(pageNumber: number): void {
     this.isLoading = true;
+    this.currentPage = pageNumber;
     this.searchValue = '';
 
     this.coinsService.getCoinsList(pageNumber, this.currentCurrency)
@@ -128,7 +129,7 @@ export class CoinListTableComponent implements OnInit {
       });
   }
 
-  private setSparklineData() {
+  private setSparklineData(): void {
     this.coinsList.forEach((coin: CoinModel) => {
       let color: string[];
       coin.price_change_percentage_14d_in_currency >= 0 ? color = ['#57BD0F'] : color = ['#ED5565'];

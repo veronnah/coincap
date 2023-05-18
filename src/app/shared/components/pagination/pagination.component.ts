@@ -9,7 +9,8 @@ export class PaginationComponent implements OnInit {
   @Input() currentPage: number;
   @Output() getData: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
