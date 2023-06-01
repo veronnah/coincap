@@ -9,11 +9,9 @@ export class PaginationComponent implements OnInit {
   @Input() currentPage: number;
   @Output() getData: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public paginate(direction: string): void {
     if (direction === 'next') {

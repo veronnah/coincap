@@ -12,6 +12,7 @@ export interface CoinModel {
   price_change_percentage_14d_in_currency: number,
   total_volume: number,
   sparkline_in_7d: Sparkline7dModel,
+  isFavorite?: boolean,
   chartOptions?: ChartOptionsModel,
 }
 

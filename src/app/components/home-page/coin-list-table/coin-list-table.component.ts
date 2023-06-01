@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 import { AutoDestroyService } from "../../../services/auto-destroy.service";
 import { SearchCoinsModel } from "../../../models/searchCoins.model";
 import { CommonService } from "../../../services/common.service";
+import { MatCheckboxChange } from "@angular/material/checkbox";
 
 declare global {
   interface Window {
@@ -40,6 +41,8 @@ export class CoinListTableComponent implements OnInit {
 
   public displayedColumns: string[] = ALL_COLUMNS;
   public coinsList: CoinModel[];
+  public favoriteCoins: CoinModel[];
+  public isFavoritesShown: boolean;
   public dataSource: MatTableDataSource<CoinModel>;
   public clickedRows: Set<CoinModel> = new Set<CoinModel>();
   public currentPage: number = 1;
@@ -94,6 +97,7 @@ export class CoinListTableComponent implements OnInit {
   ngOnInit(): void {
     this.getCurrentCurrency();
     this.searchModelChangeListener();
+    this.getFavoriteCoins();
   }
 
   public getCurrentCurrency(): void {
@@ -122,11 +126,18 @@ export class CoinListTableComponent implements OnInit {
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
           this.isLoading = false;
+          this.addFavoriteField(this.coinsList);
         },
         error: () => {
           this.isLoading = false;
         }
       });
+  }
+
+  private addFavoriteField(list: CoinModel[]): void {
+    list?.map((coin: CoinModel) => {
+      return coin.isFavorite = this.favoriteCoins.some((favCoin: CoinModel) => favCoin.id === coin.id);
+    });
   }
 
   private setSparklineData(): void {
@@ -166,7 +177,8 @@ export class CoinListTableComponent implements OnInit {
         .subscribe({
           next: (result: SearchCoinsModel) => {
             this.searchResults = result.coins;
-            this.dataSource = new MatTableDataSource(this.searchResults);
+            this.addFavoriteField(this.searchResults);
+            this.dataSource.data = this.searchResults;
             this.dataSource.sort = this.sort;
             this.isLoading = false;
           },
@@ -185,13 +197,35 @@ export class CoinListTableComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.coinsList);
     this.dataSource.sort = this.sort;
   }
+  private setFavoriteColumns(): void {
+    this.displayedColumns = [
+      'market_cap_rank',
+      'name',
+    ];
+    this.dataSource.data = this.favoriteCoins;
+    this.dataSource.sort = this.sort;
+  }
 
   public onRowClick(row: CoinModel): void {
     this.clickedRows.add(row);
-    this.router.navigate(['coins', row.id]).then();
+    void this.router.navigate(['coins', row.id]);
   }
 
-  public addToFavorite(coin: CoinModel, event: any): void {
+  public addToFavorite(coin: CoinModel, event: MouseEvent): void {
+    event.stopPropagation();
+    const coinIdx = this.favoriteCoins.findIndex((favCoin) => favCoin.id === coin.id);
+    if (coinIdx >= 0) {
+      this.favoriteCoins.splice(coinIdx, 1);
+    } else {
+      this.favoriteCoins.push(coin);
+    }
+    this.addFavoriteField(this.favoriteCoins);
+    this.addFavoriteField(this.coinsList);
+    this.addFavoriteField(this.searchResults);
+    this.setFavoritesToLS();
+    if (this.isFavoritesShown) {
+      this.setFavoriteColumns();
+    }
   }
 
   public announceSortChange(sortState: Sort): void {
@@ -200,6 +234,24 @@ export class CoinListTableComponent implements OnInit {
     } else {
       this.liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  public showFavorites(event: MatCheckboxChange): void {
+    this.isFavoritesShown = event.checked;
+    if (this.isFavoritesShown) {
+      this.setFavoriteColumns();
+    } else {
+      this.setDefaultColumns();
+    }
+  }
+
+  private getFavoriteCoins(): void {
+    const savedCoins = localStorage.getItem('favoriteCoins');
+    this.favoriteCoins = savedCoins ? JSON.parse(savedCoins) : [];
+  }
+
+  private setFavoritesToLS(): void {
+    localStorage.setItem('favoriteCoins', JSON.stringify(this.favoriteCoins));
   }
 
   private initApexChart(): void {

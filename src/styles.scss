@@ -193,10 +193,6 @@ body {
       color: #fff;
     }
 
-    .coin-details .coin-chart-wrapper .mat-tab-header .mat-tab-label-container .mat-tab-labels .mat-tab-label {
-      border: 1px solid #394447;
-    }
-
     .coin-details {
       .coin-chart-wrapper {
         .mat-tab-header {
@@ -301,6 +297,16 @@ body {
           button {
             background-color: #77856f;
             border: 1px solid #77856f;
+          }
+        }
+      }
+    }
+
+    .favorite-checkbox {
+      &.mat-checkbox-checked {
+        .mat-checkbox-background {
+          .mat-checkbox-checkmark-path {
+            stroke: #000 !important;
           }
         }
       }
@@ -443,7 +449,7 @@ ul {
 
 tr {
   &.mat-row {
-    height: 50px;
+    height: 50px !important;
   }
 }
 
@@ -484,6 +490,34 @@ apx-chart {
 
 .mat-form-field-wrapper {
   padding-bottom: 0;
+}
+
+.favorite-checkbox {
+  position: absolute;
+  right: 29em;
+  top: 17.3em;
+  font-family: unset;
+  display: flex !important;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: $grey-medium;
+
+  .mat-checkbox-frame {
+    border-color: $grey-medium;
+    border-width: 1px;
+  }
+
+  &.mat-checkbox-checked {
+    .mat-checkbox-background {
+      background-color: $yellow-dark;
+    }
+  }
+
+  .mat-checkbox-ripple {
+    display: none;
+  }
 }
 
 .search-field {

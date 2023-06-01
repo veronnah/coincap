@@ -34,6 +34,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { DarkModeToggleComponent } from './shared/components/dark-mode-toggle/dark-mode-toggle.component';
 import { DARK_MODE_OPTIONS } from "angular-dark-mode";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -50,28 +51,29 @@ import { DARK_MODE_OPTIONS } from "angular-dark-mode";
     FooterComponent,
     DarkModeToggleComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    NgApexchartsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatTooltipModule,
-    MatTabsModule,
-    TradingviewWidgetModule,
-    MatSnackBarModule,
-    MatProgressBarModule,
-    ClipboardModule,
-    MatMenuModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        NgApexchartsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatTooltipModule,
+        MatTabsModule,
+        TradingviewWidgetModule,
+        MatSnackBarModule,
+        MatProgressBarModule,
+        ClipboardModule,
+        MatMenuModule,
+        MatCheckboxModule,
+    ],
   providers: [
     {
       provide: DARK_MODE_OPTIONS,
