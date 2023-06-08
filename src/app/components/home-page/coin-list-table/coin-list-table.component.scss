@@ -1,6 +1,7 @@
 @import "../../../../assets/colors";
 
 .table-container {
+  position: relative;
   padding-top: 130px;
   padding-bottom: 130px;
 
@@ -16,6 +17,24 @@
     width: 100%;
     border-radius: 5px;
     background-color: inherit;
+
+    .timeframe-col-head, .timeframe-col {
+      @media screen and (max-width: 1060px) {
+        display: none;
+      }
+    }
+
+    .hidden-col-sm {
+      @media screen and (max-width: 830px) {
+        display: none;
+      }
+    }
+
+    .price-col {
+      @media screen and (max-width: 830px) {
+        padding: 0 24px;
+      }
+    }
 
     tr {
       cursor: pointer;
@@ -43,7 +62,6 @@
       color: $bearish;
     }
   }
-
 
 
 }

@@ -116,11 +116,6 @@
       </mat-tab-group>
       <app-loader class="loader-small" *ngIf="isChartDataLoading && !isChartDataLoading"></app-loader>
     </div>
-
-    <div class="coin-description" *ngIf="coinDescription">
-      <h3>About</h3>
-      <p [innerHTML]="coinDescription"></p>
-    </div>
   </div>
 
   <div class="coin-actions d-flex g-14">
@@ -160,7 +155,7 @@
     </mat-menu>
   </div>
 
-  <div class="wrapper">
+  <div class="wrapper coin-info-wrap">
     <ng-container *ngIf="!isCoinInfoLoading">
       <div class="coin-info">
         <h3>Info</h3>
@@ -279,6 +274,13 @@
         </div>
       </div>
     </ng-container>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="coin-description" *ngIf="coinDescription">
+    <h3>About</h3>
+    <p [innerHTML]="coinDescription"></p>
   </div>
 </div>
 

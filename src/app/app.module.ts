@@ -35,6 +35,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { DarkModeToggleComponent } from './shared/components/dark-mode-toggle/dark-mode-toggle.component';
 import { DARK_MODE_OPTIONS } from "angular-dark-mode";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     UrlMiddlePartPipe,
     FooterComponent,
     DarkModeToggleComponent,
+    PageNotFoundComponent,
   ],
     imports: [
         BrowserModule,

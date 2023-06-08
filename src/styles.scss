@@ -427,6 +427,10 @@ ul {
   gap: 60px;
 }
 
+.mt-200 {
+  margin-top: 200px;
+}
+
 .mt-20 {
   margin-top: 20px;
 }
@@ -494,8 +498,8 @@ apx-chart {
 
 .favorite-checkbox {
   position: absolute;
-  right: 29em;
-  top: 17.3em;
+  right: 13em;
+  top: 11.2em;
   font-family: unset;
   display: flex !important;
   align-items: center;
@@ -503,6 +507,11 @@ apx-chart {
   font-weight: 400;
   letter-spacing: 0.04em;
   color: $grey-medium;
+
+  @media screen and (max-width: 600px) {
+    right: 22px;
+    top: 8.2em;
+  }
 
   .mat-checkbox-frame {
     border-color: $grey-medium;
@@ -557,6 +566,10 @@ apx-chart {
 .converter-field {
   max-width: 280px;
   width: 100%;
+  
+  @media screen and (max-width: 640px) {
+    max-width: unset;
+  }
 
   .mat-form-field-wrapper {
     background-color: #fff;

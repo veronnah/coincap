@@ -66,13 +66,13 @@
 
     <ng-container matColumnDef="current_price">
       <th mat-header-cell
-          class="align-right-cell"
+          class="align-right-cell price-col"
           *matHeaderCellDef
           mat-sort-header="current_price"
           sortActionDescription="Sort by price">
         Price
       </th>
-      <td mat-cell class="align-right-cell"
+      <td mat-cell class="align-right-cell price-col"
           *matCellDef="let coin">
         {{ coin.current_price | currency: currentCurrency }}
       </td>
@@ -80,13 +80,13 @@
 
     <ng-container matColumnDef="price_change_percentage_1h_in_currency">
       <th mat-header-cell
-          class="align-right-cell"
+          class="align-right-cell timeframe-col-head"
           *matHeaderCellDef
           mat-sort-header="price_change_percentage_1h_in_currency"
           sortActionDescription="Sort by 1h change">
         1h
       </th>
-      <td mat-cell class="align-right-cell"
+      <td mat-cell class="align-right-cell timeframe-col"
           [class.bull]="coin.price_change_percentage_1h_in_currency >= 0"
           [class.bear]="coin.price_change_percentage_1h_in_currency < 0"
           *matCellDef="let coin">
@@ -96,13 +96,13 @@
 
     <ng-container matColumnDef="price_change_percentage_24h">
       <th mat-header-cell
-          class="align-right-cell"
+          class="align-right-cell timeframe-col-head"
           *matHeaderCellDef
           mat-sort-header="price_change_percentage_24h"
           sortActionDescription="Sort by 24h change">
         24h
       </th>
-      <td mat-cell class="align-right-cell"
+      <td mat-cell class="align-right-cell timeframe-col"
           [class.bull]="coin.price_change_percentage_24h >= 0"
           [class.bear]="coin.price_change_percentage_24h < 0"
           *matCellDef="let coin">
@@ -112,13 +112,13 @@
 
     <ng-container matColumnDef="price_change_percentage_14d_in_currency">
       <th mat-header-cell
-          class="align-right-cell"
+          class="align-right-cell timeframe-col-head"
           *matHeaderCellDef
           mat-sort-header="price_change_percentage_14d_in_currency"
           sortActionDescription="Sort by 7d change">
         7d
       </th>
-      <td mat-cell class="align-right-cell"
+      <td mat-cell class="align-right-cell timeframe-col"
           [class.bull]="coin.price_change_percentage_14d_in_currency >= 0"
           [class.bear]="coin.price_change_percentage_14d_in_currency < 0"
           *matCellDef="let coin">
@@ -127,22 +127,22 @@
     </ng-container>
 
     <ng-container matColumnDef="total_volume">
-      <th mat-header-cell class="align-right-cell"
+      <th mat-header-cell class="align-right-cell hidden-col-sm"
           *matHeaderCellDef mat-sort-header="total_volume"
           sortActionDescription="Sort by volume">
         Total volume
       </th>
-      <td mat-cell class="align-right-cell" *matCellDef="let coin">
+      <td mat-cell class="align-right-cell hidden-col-sm" *matCellDef="let coin">
         {{ coin.total_volume | currency: currentCurrency }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="sparkline_in_7d">
-      <th mat-header-cell class="align-right-cell-text"
+      <th mat-header-cell class="align-right-cell-text hidden-col-sm"
           *matHeaderCellDef>
         Last 7 days
       </th>
-      <td mat-cell class="align-right-cell" *matCellDef="let coin; let i = index">
+      <td mat-cell class="align-right-cell hidden-col-sm" *matCellDef="let coin; let i = index">
         <apx-chart class="mini-sparkline"
                    [series]="coin.chartOptions.series"
                    [colors]="coin.chartOptions.colors"
