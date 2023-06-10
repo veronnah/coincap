@@ -213,7 +213,7 @@ export class CoinListTableComponent implements OnInit {
 
   public addToFavorite(coin: CoinModel, event: MouseEvent): void {
     event.stopPropagation();
-    const coinIdx = this.favoriteCoins.findIndex((favCoin) => favCoin.id === coin.id);
+    const coinIdx = this.favoriteCoins.findIndex((favCoin: CoinModel) => favCoin.id === coin.id);
     if (coinIdx >= 0) {
       this.favoriteCoins.splice(coinIdx, 1);
     } else {
